@@ -44,9 +44,9 @@ const Navigation = (() => {
 
   function navigateTo(page) {
     // Update nav links
-    document.querySelectorAll('.nav-link').forEach(l => {
-      l.classList.toggle('active', l.dataset.page === page);
-    });
+    // document.querySelectorAll('.nav-link').forEach(l => {
+    //   l.classList.toggle('active', l.dataset.page === page);
+    // });
 
     // Show/hide panels
     document.querySelectorAll('.page-panel').forEach(p => {

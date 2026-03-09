@@ -58,7 +58,10 @@ Route::middleware(['auth'])->prefix('kasir')->group(function () {
     Route::resource('transaksi', TransaksiController::class)
         ->only(['index','store']);
 
-    Route::resource('detail-transaksi', DetailTransaksiController::class)
-        ->only(['index']);
+    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayat'])
+        ->name('transaksi.riwayat');
+    
+    Route::get('/profil', function () {return view('kasir.profil');})
+        ->name('kasir.profil');
 
 });
