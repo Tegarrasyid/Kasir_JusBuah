@@ -1,0 +1,165 @@
+/* ============================================
+   MAIN.CSS — Kasir App Base Styles
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap');
+
+/* --- CSS Variables --- */
+:root {
+  --cream:        #faf7f2;
+  --cream-2:      #f3ede3;
+  --cream-3:      #ebe2d4;
+  --white:        #ffffff;
+  --amber:        #f59e0b;
+  --amber-light:  #fde68a;
+  --amber-dark:   #d97706;
+  --amber-glow:   rgba(245,158,11,0.18);
+  --green:        #10b981;
+  --green-light:  rgba(16,185,129,0.12);
+  --red:          #ef4444;
+  --red-light:    rgba(239,68,68,0.1);
+  --blue:         #3b82f6;
+  --brown:        #92400e;
+  --text-dark:    #1c1408;
+  --text-mid:     #6b5a3e;
+  --text-light:   #a8956e;
+  --text-muted:   #c4b49a;
+  --border:       rgba(180,150,100,0.18);
+  --border-focus: rgba(245,158,11,0.5);
+  --shadow-sm:    0 1px 4px rgba(100,70,20,0.08);
+  --shadow-md:    0 4px 16px rgba(100,70,20,0.12);
+  --shadow-lg:    0 12px 36px rgba(100,70,20,0.18);
+  --shadow-amber: 0 4px 20px rgba(245,158,11,0.35);
+  --radius:       16px;
+  --radius-sm:    10px;
+  --radius-xs:    6px;
+  --navbar-h:     64px;
+  --order-w:      360px;
+  --font-display: 'Fraunces', serif;
+  --font-body:    'Plus Jakarta Sans', sans-serif;
+  --transition:   0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* --- Reset --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { border: none; background: none; cursor: pointer; font-family: inherit; }
+input, select { font-family: inherit; }
+img { display: block; width: 100%; }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--cream-3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* --- Utility --- */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.font-bold { font-weight: 700; }
+.text-muted { color: var(--text-light); }
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+@keyframes toastIn {
+  from { opacity:0; transform: translateY(20px) scale(0.95); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  from { opacity:1; transform: translateY(0) scale(1); }
+  to   { opacity:0; transform: translateY(10px) scale(0.95); }
+}
+
+/* --- Toast Notification --- */
+.toast-container {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 9999;
+  display: flex; flex-direction: column; gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: var(--text-dark);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.3s ease forwards;
+  min-width: 220px;
+}
+.toast.removing { animation: toastOut 0.3s ease forwards; }
+.toast-icon { font-size: 1rem; }
+.toast.success { background: var(--green); }
+.toast.error   { background: var(--red); }
+.toast.warning { background: var(--amber-dark); }
+
+/* --- Modal Overlay --- */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(28,20,8,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 480px; width: calc(100% - 32px);
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.25s ease;
+}
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight: 700;
+}
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-light);
+  background: var(--cream);
+  font-size: 1.2rem;
+  transition: background var(--transition);
+}
+.modal-close:hover { background: var(--cream-3); }
