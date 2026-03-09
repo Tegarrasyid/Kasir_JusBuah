@@ -17,8 +17,8 @@
     <div class="profile-grid">
       <!-- Profile Card -->
       <div class="profile-card">
-        <div class="profile-avatar-lg">AF</div>
-        <div class="profile-name">Ahmad Fauzi</div>
+        <div class="profile-avatar-lg">{{ strtoupper(substr(Auth::user()->name,0,2)) }}</div>
+        <div class="profile-name">{{ Auth::user()->name }}</div>
         <div class="profile-role">Kasir Senior</div>
 
         <div class="profile-stats">
@@ -41,11 +41,12 @@
         <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:900;margin-bottom:20px">Informasi Akun</div>
         <div class="detail-row">
           <span class="detail-label">Nama Lengkap</span>
-          <span class="detail-value">Ahmad Fauzi</span>
+          <span class="detail-value">{{ Auth::user()->name }}</span>
+          
         </div>
         <div class="detail-row">
-          <span class="detail-label">Username</span>
-          <span class="detail-value">@kasir.fauzi</span>
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ Auth::user()->email }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Jabatan</span>
@@ -61,7 +62,7 @@
         </div>
         <div class="detail-row">
           <span class="detail-label">Bergabung</span>
-          <span class="detail-value">15 Januari 2023</span>
+          <span class="detail-value">{{ Auth::user()->created_at->format('d F Y') }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Status</span>

@@ -48,9 +48,9 @@
       </button>
 
       <div class="navbar-avatar">
-        <div class="avatar-img">AF</div>
+        <div class="avatar-img">{{ strtoupper(substr(Auth::user()->name,0,2)) }}</div>
         <div>
-          <div class="avatar-name">Ahmad Fauzi</div>
+        <div class="avatar-name">{{ Auth::user()->name }}</div>
           <div class="avatar-role">Kasir</div>
         </div>
       </div>

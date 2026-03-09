@@ -64,4 +64,8 @@ Route::middleware(['auth'])->prefix('kasir')->group(function () {
     Route::get('/profil', function () {return view('kasir.profil');})
         ->name('kasir.profil');
 
+    Route::get('/kasir/profil', function () {
+    $user = Auth::user(); return view('kasir.profil', compact('user'));})
+    ->name('kasir.profil')->middleware('auth');
+
 });
