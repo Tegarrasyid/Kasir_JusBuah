@@ -13,7 +13,7 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        $produk = Produk::with('kategori')->get();
+        $produk = Produk::with('kategori')->latest()->paginate(10);
         $kategori = KategoriProduk::all();
 
         return view('admin.produk.index', compact('produk','kategori'));
@@ -24,7 +24,8 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        //
+        $kategori = KategoriProduk::all();
+        return view('admin.produk.create', compact('kategori'));
     }
 
     /**
@@ -32,16 +33,26 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        Produk::create([
-            'kategori_id'=>$request->kategori_id,
-            'nama_produk'=>$request->nama_produk,
-            'deskripsi'=>$request->deskripsi,
-            'harga_jual'=>$request->harga_jual,
-            'foto'=>$request->foto,
-            'is_available'=>1
+        $request->validate([
+            'nama_produk' => 'required',
+            'kategori_id' => 'required',
+            'harga_jual' => 'required',
         ]);
 
-        return back()->with('success','Produk berhasil ditambahkan');
+        if($request->hasFile('foto')){
+            $foto = $request->file('foto')->store('produk','public');
+        }
+
+        Produk::create([
+            'nama_produk' => $request->nama_produk,
+            'kategori_id' => $request->kategori_id,
+            'deskripsi' => $request->deskripsi,
+            'harga_jual' => $request->harga_jual,
+            'foto' => $foto ?? null,
+            'is_available' => $request->is_available
+        ]);
+
+        return redirect()->route('produk.index')->with('success','Produk berhasil ditambahkan');
     }
 
     /**
@@ -57,24 +68,35 @@ class ProdukController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $produk = Produk::findOrFail($id);
+        $kategori = KategoriProduk::all();
+
+        return view('admin.produk.edit', compact('produk','kategori'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $produk = Produk::findOrFail($id);
 
+        if($request->hasFile('foto')){
+            $foto = $request->file('foto')->store('produk','public');
+        }else{
+            $foto = $produk->foto;
+        }
+
         $produk->update([
-            'kategori_id'=>$request->kategori_id,
-            'nama_produk'=>$request->nama_produk,
-            'deskripsi'=>$request->deskripsi,
-            'harga_jual'=>$request->harga_jual
+            'nama_produk' => $request->nama_produk,
+            'kategori_id' => $request->kategori_id,
+            'deskripsi' => $request->deskripsi,
+            'harga_jual' => $request->harga_jual,
+            'foto' => $foto,
+            'is_available' => $request->is_available
         ]);
 
-        return back()->with('success','Produk berhasil diupdate');
+        return redirect()->route('produk.index')->with('success','Produk berhasil diupdate');
     }
 
     /**
@@ -82,8 +104,9 @@ class ProdukController extends Controller
      */
     public function destroy(string $id)
     {
-        Produk::destroy($id);
+        $produk = Produk::findOrFail($id);
+        $produk->delete();
 
-        return back()->with('success','Produk berhasil dihapus');
+        return redirect()->route('produk.index')->with('success','Produk berhasil dihapus');    
     }
 }
