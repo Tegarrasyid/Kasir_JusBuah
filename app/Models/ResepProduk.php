@@ -16,10 +16,10 @@ class ResepProduk extends Model
 
     public function produk()
     {
-        return $this->belongsTo(Produk::class, 'produk_id');
+        return $this->belongsTo(Produk::class);
     }
 
-    public function bahanBaku()
+    public function bahan()
     {
         return $this->belongsTo(BahanBaku::class, 'bahan_baku_id');
     }

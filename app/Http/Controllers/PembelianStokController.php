@@ -14,10 +14,8 @@ class PembelianStokController extends Controller
      */
     public function index()
     {
-        $pembelian = PembelianStok::with('bahanBaku')->get();
-        $bahan = BahanBaku::all();
-
-        return view('admin.pembelian.index',compact('pembelian','bahan'));
+        $data = PembelianStok::with('bahan','user')->latest()->get();
+        return view('admin.pembelian.index',compact('data'));
     }
 
     /**
@@ -25,7 +23,8 @@ class PembelianStokController extends Controller
      */
     public function create()
     {
-        //
+        $bahan = BahanBaku::all();
+        return view('admin.pembelian.create',compact('bahan'));
     }
 
     /**
@@ -33,16 +32,23 @@ class PembelianStokController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'bahan_baku_id' => 'required',
+            'jumlah_beli' => 'required',
+            'harga_beli_satuan' => 'required',
+            'tanggal_beli' => 'required'
+        ]);
 
-        $total = $request->jumlah_beli * $request->harga_beli;
+        $total = $request->jumlah_beli * $request->harga_beli_satuan;
 
         PembelianStok::create([
-            'bahan_baku_id'=>$request->bahan_baku_id,
-            'jumlah_beli'=>$request->jumlah_beli,
-            'harga_beli_satuan'=>$request->harga_beli,
-            'total_harga'=>$total,
-            'tanggal_beli'=>now(),
-            'user_id'=>Auth::id()
+            'user_id' => auth()->id(),
+            'bahan_baku_id' => $request->bahan_baku_id,
+            'jumlah_beli' => $request->jumlah_beli,
+            'harga_beli_satuan' => $request->harga_beli_satuan,
+            'total_harga' => $total,
+            'tanggal_beli' => $request->tanggal_beli,
+            'catatan' => $request->catatan
         ]);
 
         $bahan = BahanBaku::find($request->bahan_baku_id);
@@ -50,7 +56,7 @@ class PembelianStokController extends Controller
         $bahan->stok_tersedia += $request->jumlah_beli;
         $bahan->save();
 
-        return back()->with('success','Stok berhasil ditambah');
+        return redirect()->route('pembelian-stok.index')->with('success','Pembelian stok berhasil ditambahkan');
     }
 
     /**
@@ -64,24 +70,42 @@ class PembelianStokController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $data = PembelianStok::findOrFail($id);
+        $bahan = BahanBaku::all();
+
+        return view('admin.pembelian.edit',compact('data','bahan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,$id)
     {
-        //
+        $data = PembelianStok::findOrFail($id);
+
+        $total = $request->jumlah_beli * $request->harga_beli_satuan;
+
+        $data->update([
+            'bahan_baku_id' => $request->bahan_baku_id,
+            'jumlah_beli' => $request->jumlah_beli,
+            'harga_beli_satuan' => $request->harga_beli_satuan,
+            'total_harga' => $total,
+            'tanggal_beli' => $request->tanggal_beli,
+            'catatan' => $request->catatan
+        ]);
+
+        return redirect()->route('pembelian-stok.index')->with('success','Data berhasil diupdate');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $data = PembelianStok::findOrFail($id);
+        $data->delete();
+        return redirect()->route('pembelian-stok.index')->with('success','Data berhasil dihapus');
     }
 }

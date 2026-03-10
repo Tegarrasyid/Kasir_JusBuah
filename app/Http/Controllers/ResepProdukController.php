@@ -14,11 +14,9 @@ class ResepProdukController extends Controller
      */
     public function index()
     {
-        $resep = ResepProduk::with('produk','bahanBaku')->get();
-        $produk = Produk::all();
-        $bahan = BahanBaku::all();
+        $resep = ResepProduk::with(['produk','bahan'])->get()->groupBy('produk_id');
 
-        return view('admin.resep.index',compact('resep','produk','bahan'));    
+        return view('admin.resep.index',compact('resep'));  
     }
 
     /**
@@ -26,7 +24,10 @@ class ResepProdukController extends Controller
      */
     public function create()
     {
-        //
+        $produk = Produk::all();
+        $bahan = BahanBaku::all();
+
+        return view('admin.resep.create', compact('produk','bahan'));
     }
 
     /**
@@ -34,13 +35,19 @@ class ResepProdukController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'produk_id' => 'required',
+            'bahan_baku_id' => 'required',
+            'jumlah_dibutuhkan' => 'required|numeric'
+        ]);
+
         ResepProduk::create([
             'produk_id'=>$request->produk_id,
             'bahan_baku_id'=>$request->bahan_baku_id,
-            'jumlah_dibutuhkan'=>$request->jumlah
+            'jumlah_dibutuhkan'=>$request->jumlah_dibutuhkan
         ]);
 
-        return back()->with('success','Resep ditambahkan');
+        return redirect()->route('resep.index')->with('success','Resep berhasil ditambahkan');
     }
 
     /**
@@ -54,26 +61,42 @@ class ResepProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $resep = ResepProduk::findOrFail($id);
+        $produk = Produk::all();
+        $bahan = BahanBaku::all();
+
+        return view('admin.resep.edit', compact('resep','produk','bahan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,$id)
     {
-        //
+        $resep = ResepProduk::findOrFail($id);
+
+        $resep->update([
+            'produk_id'=>$request->produk_id,
+            'bahan_baku_id'=>$request->bahan_baku_id,
+            'jumlah_dibutuhkan'=>$request->jumlah_dibutuhkan
+        ]);
+
+        return redirect()->route('resep.index')
+            ->with('success','Resep berhasil diupdate');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    
+    public function destroy($id)
     {
         ResepProduk::destroy($id);
 
-        return back()->with('success','Resep dihapus');
+        return redirect()->route('resep.index')
+            ->with('success','Resep berhasil dihapus');
     }
+
 }
