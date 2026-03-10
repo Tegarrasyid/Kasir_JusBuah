@@ -21,7 +21,7 @@ class BahanBakuController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.bahan.create');
     }
 
     /**
@@ -29,15 +29,24 @@ class BahanBakuController extends Controller
      */
     public function store(Request $request)
     {
-        BahanBaku::create([
-            'nama_bahan'=>$request->nama_bahan,
-            'satuan'=>$request->satuan,
-            'stok_tersedia'=>$request->stok,
-            'stok_minimum'=>$request->stok_minimum,
-            'harga_beli'=>$request->harga_beli
+        $request->validate([
+            'nama_bahan' => 'required',
+            'satuan' => 'required',
+            'harga_beli' => 'required|numeric',
+            'stok_tersedia' => 'required|numeric',
+            'stok_minimum' => 'required|numeric',
         ]);
 
-        return back()->with('success','Bahan berhasil ditambah');
+        BahanBaku::create([
+            'nama_bahan' => $request->nama_bahan,
+            'satuan' => $request->satuan,
+            'harga_beli' => $request->harga_beli,
+            'stok_tersedia' => $request->stok_tersedia,
+            'stok_minimum' => $request->stok_minimum,
+        ]);
+
+        return redirect()->route('bahan-baku.index')
+            ->with('success','Bahan baku berhasil ditambahkan');
     }
 
     /**
@@ -51,36 +60,49 @@ class BahanBakuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $bahan = BahanBaku::findOrFail($id);
+        return view('admin.bahan.edit', compact('bahan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama_bahan' => 'required',
+            'satuan' => 'required',
+            'harga_beli' => 'required|numeric',
+            'stok_tersedia' => 'required|numeric',
+            'stok_minimum' => 'required|numeric',
+        ]);
+
         $bahan = BahanBaku::findOrFail($id);
 
         $bahan->update([
-            'nama_bahan'=>$request->nama_bahan,
-            'satuan'=>$request->satuan,
-            'stok_tersedia'=>$request->stok,
-            'stok_minimum'=>$request->stok_minimum,
-            'harga_beli'=>$request->harga_beli
+            'nama_bahan' => $request->nama_bahan,
+            'satuan' => $request->satuan,
+            'harga_beli' => $request->harga_beli,
+            'stok_tersedia' => $request->stok_tersedia,
+            'stok_minimum' => $request->stok_minimum,
         ]);
 
-        return back()->with('success','Bahan berhasil diupdate');
+        return redirect()->route('bahan-baku.index')->with('success','Bahan baku berhasil diupdate');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        BahanBaku::destroy($id);
 
-        return back()->with('success','Bahan berhasil dihapus');
+    public function destroy($id)
+    {
+        $bahan = BahanBaku::findOrFail($id);
+        $bahan->delete();
+
+        return redirect()->route('bahan-baku.index')
+            ->with('success','Bahan baku berhasil dihapus');
     }
+
 }
