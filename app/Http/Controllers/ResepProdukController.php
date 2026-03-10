@@ -34,7 +34,13 @@ class ResepProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ResepProduk::create([
+            'produk_id'=>$request->produk_id,
+            'bahan_baku_id'=>$request->bahan_baku_id,
+            'jumlah_dibutuhkan'=>$request->jumlah
+        ]);
+
+        return back()->with('success','Resep ditambahkan');
     }
 
     /**
@@ -66,6 +72,8 @@ class ResepProdukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        ResepProduk::destroy($id);
+
+        return back()->with('success','Resep dihapus');
     }
 }

@@ -17,7 +17,7 @@
         <span class="notif-pip"></span>
       </button>
       <div class="topbar-user">
-        <div class="s-avatar"><img src="{{asset('assets/img/profil.png')}}" alt=""></div>
+        <div class="s-avatar"><img src="{{ asset('storage/'.Auth::user()->foto) }}" alt="Foto Profil"></div>
         <div class="s-name">{{ Auth::user()->name }}</div>
       </div>
     </div>

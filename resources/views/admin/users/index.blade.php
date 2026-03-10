@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('title','All User')
-@section('breadcrumb','Users')
+@section('breadcrumb','Pengguna')
 @section('content')
 
 
@@ -11,7 +11,7 @@
       <div class="page-heading">
         <div class="page-heading-left">
           <h1>Manajemen Pengguna</h1>
-          <p>Kelola akun admin, kasir, dan manajer</p>
+          <p>Kelola akun admin, dan kasir</p>
         </div>
       </div>
       <div class="crud-toolbar">
@@ -20,10 +20,10 @@
           <input id="users-search" type="text" placeholder="Cari pengguna..."/>
         </div>
         <div class="crud-actions">
-          <button class="btn btn-primary" id="btn-add-user">
+          <a href="{{ route('users.create') }}" class="btn btn-primary" id="btn-add-user">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Tambah Pengguna
-          </button>
+          </a>
         </div>
       </div>
       <div class="card" style="padding:0;overflow:hidden">

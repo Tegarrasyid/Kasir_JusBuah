@@ -21,7 +21,7 @@ class KategoriProdukController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.kategori.create');
     }
 
     /**
@@ -29,7 +29,16 @@ class KategoriProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required',
+        ]);
+
+        KategoriProduk::create([
+            'nama_kategori' => $request->nama_kategori,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success','Kategori berhasil ditambahkan');
     }
 
     /**
@@ -45,7 +54,8 @@ class KategoriProdukController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $kategori = KategoriProduk::findOrFail($id);
+        return view('admin.kategori.edit', compact('kategori'));
     }
 
     /**
@@ -53,7 +63,18 @@ class KategoriProdukController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required'
+        ]);
+
+        $kategori = KategoriProduk::findOrFail($id);
+
+        $kategori->update([
+            'nama_kategori' => $request->nama_kategori,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success','Kategori berhasil diupdate');
     }
 
     /**
@@ -61,6 +82,9 @@ class KategoriProdukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $kategori = KategoriProduk::findOrFail($id);
+        $kategori->delete();
+
+        return redirect()->route('kategori.index')->with('success','Kategori berhasil dihapus');
     }
 }

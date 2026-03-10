@@ -12,13 +12,32 @@ use App\Http\Controllers\DetailTransaksiController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Auth::routes();
+Auth::routes(
+    [
+        'register' => false, // Disable registration routes
+        'reset' => false,    // Disable password reset routes
+        'verify' => false,   // Disable email verification routes
+        'confirm' => false,  // Disable password confirmation routes
+    ]
+);
+
+Route::get('/home', function () {
+
+    if(Auth::user()->is_admin){
+        return redirect()->route('admin.dashboard');
+    }else{
+        return redirect()->route('kasir.dashboard');
+    }
+
+})->middleware('auth')->name('home');
 
 Route::middleware(['auth'])->group(function () {
+
 
     Route::get('/dashboard', function () {
 

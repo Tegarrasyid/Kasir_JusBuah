@@ -48,7 +48,7 @@
       </button>
 
       <div class="navbar-avatar">
-        <div class="avatar-img">{{ strtoupper(substr(Auth::user()->name,0,2)) }}</div>
+        <div class="avatar-img"><img src="{{ asset('storage/'.Auth::user()->foto) }}" alt="Foto Profil"></div>
         <div>
         <div class="avatar-name">{{ Auth::user()->name }}</div>
           <div class="avatar-role">Kasir</div>

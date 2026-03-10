@@ -76,7 +76,7 @@
 
     <div class="sidebar-footer">
     <div class="sidebar-user">
-        <div class="s-avatar"><img src="{{asset('assets/img/profil.png')}}" alt=""></div>
+        <div class="s-avatar"><img src="{{ asset('storage/'.Auth::user()->foto) }}" alt="Foto Profil"></div>
         <div>
         <div class="s-name">{{ Auth::user()->name }}</div>
         <div class="s-role">Administrator</div>

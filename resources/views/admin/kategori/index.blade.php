@@ -18,10 +18,10 @@
           <input id="cats-search" type="text" placeholder="Cari kategori..."/>
         </div>
         <div class="crud-actions">
-          <button class="btn btn-primary" id="btn-add-cat">
+          <a href="{{ route('kategori.create') }}" class="btn btn-primary" id="btn-add-cat">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Tambah Kategori
-          </button>
+          </a>
         </div>
       </div>
       <div class="card" style="padding:0;overflow:hidden">
@@ -29,7 +29,6 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                    <th>Ikon</th>
                     <th>Nama Kategori</th>
                     <th>Deskripsi</th>
                     <th>Aksi</th>
@@ -39,12 +38,16 @@
                 <tbody>
                     @forelse ($kategori as $k)
                     <tr>
-                        <td>{{ $k->icon ?? '-' }}</td>
                         <td>{{ $k->nama_kategori }}</td>
                         <td>{{ $k->deskripsi ?? '-' }}</td>
                         <td>
                             <a href="{{ route('kategori.edit',$k->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        </td>
+                            <form action="{{ route('kategori.destroy',$k->id) }}" method="POST" style="display:inline;">
+                              @csrf
+                              @method('DELETE')
+                              <button class="btn btn-sm btn-danger">Hapus</button>
+                          </form>
+                          </td>
                     </tr>
                     @empty
                     <tr>

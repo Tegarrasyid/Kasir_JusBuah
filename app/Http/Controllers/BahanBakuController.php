@@ -29,7 +29,15 @@ class BahanBakuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        BahanBaku::create([
+            'nama_bahan'=>$request->nama_bahan,
+            'satuan'=>$request->satuan,
+            'stok_tersedia'=>$request->stok,
+            'stok_minimum'=>$request->stok_minimum,
+            'harga_beli'=>$request->harga_beli
+        ]);
+
+        return back()->with('success','Bahan berhasil ditambah');
     }
 
     /**
@@ -53,7 +61,17 @@ class BahanBakuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $bahan = BahanBaku::findOrFail($id);
+
+        $bahan->update([
+            'nama_bahan'=>$request->nama_bahan,
+            'satuan'=>$request->satuan,
+            'stok_tersedia'=>$request->stok,
+            'stok_minimum'=>$request->stok_minimum,
+            'harga_beli'=>$request->harga_beli
+        ]);
+
+        return back()->with('success','Bahan berhasil diupdate');
     }
 
     /**
@@ -61,6 +79,8 @@ class BahanBakuController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        BahanBaku::destroy($id);
+
+        return back()->with('success','Bahan berhasil dihapus');
     }
 }

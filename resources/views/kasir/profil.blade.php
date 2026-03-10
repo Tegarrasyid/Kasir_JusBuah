@@ -17,7 +17,7 @@
     <div class="profile-grid">
       <!-- Profile Card -->
       <div class="profile-card">
-        <div class="profile-avatar-lg">{{ strtoupper(substr(Auth::user()->name,0,2)) }}</div>
+        <div class="profile-avatar-lg"><img src="{{ asset('storage/'.Auth::user()->foto) }}" alt="Foto Profil"></div>
         <div class="profile-name">{{ Auth::user()->name }}</div>
         <div class="profile-role">Kasir Senior</div>
 

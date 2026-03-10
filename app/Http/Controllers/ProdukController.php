@@ -32,7 +32,16 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Produk::create([
+            'kategori_id'=>$request->kategori_id,
+            'nama_produk'=>$request->nama_produk,
+            'deskripsi'=>$request->deskripsi,
+            'harga_jual'=>$request->harga_jual,
+            'foto'=>$request->foto,
+            'is_available'=>1
+        ]);
+
+        return back()->with('success','Produk berhasil ditambahkan');
     }
 
     /**
@@ -56,7 +65,16 @@ class ProdukController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $produk = Produk::findOrFail($id);
+
+        $produk->update([
+            'kategori_id'=>$request->kategori_id,
+            'nama_produk'=>$request->nama_produk,
+            'deskripsi'=>$request->deskripsi,
+            'harga_jual'=>$request->harga_jual
+        ]);
+
+        return back()->with('success','Produk berhasil diupdate');
     }
 
     /**
@@ -64,6 +82,8 @@ class ProdukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Produk::destroy($id);
+
+        return back()->with('success','Produk berhasil dihapus');
     }
 }

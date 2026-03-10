@@ -33,7 +33,24 @@ class PembelianStokController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $total = $request->jumlah_beli * $request->harga_beli;
+
+        PembelianStok::create([
+            'bahan_baku_id'=>$request->bahan_baku_id,
+            'jumlah_beli'=>$request->jumlah_beli,
+            'harga_beli_satuan'=>$request->harga_beli,
+            'total_harga'=>$total,
+            'tanggal_beli'=>now(),
+            'user_id'=>Auth::id()
+        ]);
+
+        $bahan = BahanBaku::find($request->bahan_baku_id);
+
+        $bahan->stok_tersedia += $request->jumlah_beli;
+        $bahan->save();
+
+        return back()->with('success','Stok berhasil ditambah');
     }
 
     /**
