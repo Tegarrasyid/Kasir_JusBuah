@@ -136,7 +136,7 @@ const ReceiptModal = (() => {
           <div><span>No. Order</span><span>${txn.id}</span></div>
           <div><span>Tanggal</span><span>${dateStr}</span></div>
           <div><span>Pukul</span><span>${timeStr}</span></div>
-          <div><span>Kasir</span><span>Ahmad Fauzi</span></div>
+          <div><span>Kasir</span><span>${window.kasirName}</span></div>
         </div>
 
         <hr class="receipt-divider" />
@@ -155,12 +155,19 @@ const ReceiptModal = (() => {
 
         <div class="receipt-totals">
           <div><span>Subtotal</span><span>${formatRp(txn.subtotal)}</span></div>
+          <div><span>Bayar</span><span>${formatRp(txn.bayar)}</span></div>
+          ${txn.change > 0 ? `
+            <div><span>Kembalian</span><span>${formatRp(txn.change)}</span></div>
+          ` : ''}
           <hr class="receipt-divider" />
           <div class="receipt-grand-total">
             <span>TOTAL</span>
             <span>${formatRp(txn.total)}</span>
           </div>
-          <div><span>Pembayaran</span><span style="text-transform:capitalize">${txn.payment}</span></div>
+          <div>
+            <span>Pembayaran</span>
+            <span style="text-transform:capitalize">${txn.payment}</span>
+          </div>
         </div>
 
         <hr class="receipt-divider" />

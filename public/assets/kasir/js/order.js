@@ -237,6 +237,31 @@ const OrderPanel = (() => {
   function init() {
     render();
 
+      // Hitung kembalian realtime
+      const bayarInput = document.getElementById("bayar-input");
+      const changeDisplay = document.getElementById("summary-change");
+      const checkoutBtn = document.getElementById("checkout-btn");
+
+      if (bayarInput) {
+        bayarInput.addEventListener("input", () => {
+
+          const bayar = parseInt(bayarInput.value) || 0;
+          const tot = total();
+
+          const change = bayar - tot;
+
+          if (changeDisplay) {
+            changeDisplay.textContent = formatRp(change > 0 ? change : 0);
+          }
+
+          // disable checkout jika uang kurang
+          if (checkoutBtn) {
+            checkoutBtn.disabled = bayar < tot || items.length === 0;
+          }
+
+        });
+      }
+
     // Discount input
     const discInput = document.getElementById('discount-input');
     if (discInput) {
@@ -256,7 +281,7 @@ const OrderPanel = (() => {
     });
 
     // Checkout
-    const checkoutBtn = document.getElementById('checkout-btn');
+    // const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) {
       checkoutBtn.addEventListener('click', checkout);
     }

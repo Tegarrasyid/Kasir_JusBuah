@@ -55,6 +55,11 @@
           <input type="number" id="bayar-input" class="payment-field" placeholder="Masukkan uang pelanggan" required>
         </div>
 
+        <div class="summary-row">
+          <span>Kembalian</span>
+          <span id="summary-change">Rp 0</span>
+        </div>
+
         <!-- Payment Methods -->
         <div class="payment-methods">
           <button class="pay-method selected" data-method="tunai">

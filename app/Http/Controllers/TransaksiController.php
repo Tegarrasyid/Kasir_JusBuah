@@ -184,6 +184,8 @@ class TransaksiController extends Controller
                     }),
                     'subtotal' => $transaksi->total_harga,
                     'total' => $transaksi->total_harga,
+                    'bayar' => $transaksi->nominal_bayar,
+                    'change' => $transaksi->kembalian,
                     'payment' => $transaksi->metode_pembayaran
                 ]
             ]);

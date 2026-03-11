@@ -53,7 +53,8 @@
 </div>
 
   <script>
-  window.PRODUCTS = @json($produk);
+    window.PRODUCTS = @json($produk);
+    window.kasirName = "{{ Auth::user()->name }}";
   </script>
 
 @endsection
