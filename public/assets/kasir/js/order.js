@@ -9,7 +9,7 @@ const OrderPanel = (() => {
   let payMethod = 'tunai';
   let orderSeq  = parseInt(localStorage.getItem('kasir_seq') || '0') + 1;
 
-  const TAX_RATE = 0.10;
+  const TAX_RATE = 0.00;
 
   /* ---- Helpers ---- */
   function genOrderNo() {
@@ -186,47 +186,52 @@ const OrderPanel = (() => {
   }
 
   /* ---- Checkout ---- */
-  function checkout() {
-    if (!items.length) return;
+  async function checkout() {
 
-    const orderNo = genOrderNo();
-    const now     = new Date();
+  if (!items.length) return;
 
-    const txn = {
-      id:        orderNo,
-      timestamp: now.toISOString(),
-      items:     JSON.parse(JSON.stringify(items)),
-      subtotal:  subtotal(),
-      discount:  discountAmt(),
-      tax:       tax(),
-      total:     total(),
-      payment:   payMethod,
-      customer:  document.getElementById('customer-name')?.value || 'Umum',
-      table:     document.getElementById('table-no')?.textContent || 'T1',
-    };
+  const payload = {
+    produk_id: items.map(i => i.id),
+    jumlah: items.map(i => i.qty),
+    metode: payMethod,
+    bayar: parseInt(document.getElementById('bayar-input').value)
+  };
 
-    // Save to history
-    const history = JSON.parse(localStorage.getItem('kasir_txn') || '[]');
-    history.unshift(txn);
-    localStorage.setItem('kasir_txn', JSON.stringify(history.slice(0, 200)));
+  try {
 
-    // Bump seq
-    orderSeq++;
-    localStorage.setItem('kasir_seq', String(orderSeq));
+    const response = await fetch('/kasir/transaksi', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Accept':'application/json',
+        'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify(payload)
+    });
 
-    // Show receipt
-    ReceiptModal.show(txn);
+    const data = await response.json();
 
-    // Reset
-    items    = [];
-    discount = 0;
-    render();
+    if(!response.ok){
+      console.error(data);
+      Toast.show(data.message || 'Server error','error');
+      return;
+    }
 
-    // Update transaction history page
-    if (typeof TransactionPage !== 'undefined') TransactionPage.refresh();
+    if(data.success){
+      console.log("DATA TRANSAKSI:", data.transaksi);
+      ReceiptModal.show(data.transaksi);
+      items = [];
+      discount = 0;
+      render();
+      Toast.show('Pembayaran berhasil','success');
+    }
 
-    Toast.show(`✅ Pembayaran ${formatRp(txn.total)} berhasil!`, 'success');
+  } catch(err){
+    console.error(err);
+    Toast.show('Transaksi gagal','error');
   }
+
+}
 
   /* ---- Init ---- */
   function init() {

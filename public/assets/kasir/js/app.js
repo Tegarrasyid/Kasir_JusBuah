@@ -145,5 +145,5 @@ document.addEventListener('DOMContentLoaded', () => {
   ReceiptModal.init();
   ProfilePage.init();
 
-  console.log('%c ☕ Amerta Loaded ', 'background:#1c1408;color:#f59e0b;padding:5px 14px;border-radius:6px;font-weight:900;font-size:13px');
+  console.log('%c  Amerta Loaded ', 'background:#1c1408;color:#f59e0b;padding:5px 14px;border-radius:6px;font-weight:900;font-size:13px');
 });

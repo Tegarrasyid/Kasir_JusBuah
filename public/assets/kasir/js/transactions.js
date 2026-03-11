@@ -125,9 +125,9 @@ const ReceiptModal = (() => {
     document.getElementById('receipt-content').innerHTML = `
       <div class="receipt">
         <div class="receipt-header">
-          <div class="receipt-brand">☕ Amerta</div>
-          <div class="receipt-address">Jl. Kopi Enak No. 7, Jakarta Selatan</div>
-          <div class="receipt-address">Telp: 021-1234-5678</div>
+          <div class="receipt-brand">Amerta</div>
+          <div class="receipt-address">Jl. Kopi Enak No. 7, Purbalingga Kota</div>
+          <div class="receipt-address">Telp: 0876-8765-8654</div>
         </div>
 
         <hr class="receipt-divider" />
@@ -136,8 +136,6 @@ const ReceiptModal = (() => {
           <div><span>No. Order</span><span>${txn.id}</span></div>
           <div><span>Tanggal</span><span>${dateStr}</span></div>
           <div><span>Pukul</span><span>${timeStr}</span></div>
-          <div><span>Pelanggan</span><span>${txn.customer || 'Umum'}</span></div>
-          <div><span>Meja</span><span>${txn.table || '-'}</span></div>
           <div><span>Kasir</span><span>Ahmad Fauzi</span></div>
         </div>
 
@@ -157,8 +155,6 @@ const ReceiptModal = (() => {
 
         <div class="receipt-totals">
           <div><span>Subtotal</span><span>${formatRp(txn.subtotal)}</span></div>
-          ${txn.discount > 0 ? `<div><span>Diskon</span><span style="color:var(--green)">− ${formatRp(txn.discount)}</span></div>` : ''}
-          <div><span>Pajak (10%)</span><span>${formatRp(txn.tax)}</span></div>
           <hr class="receipt-divider" />
           <div class="receipt-grand-total">
             <span>TOTAL</span>

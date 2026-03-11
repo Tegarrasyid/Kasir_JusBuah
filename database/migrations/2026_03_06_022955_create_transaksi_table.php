@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('kode_transaksi', 30)->unique();
-            $table->enum('metode_pembayaran', ["tunai", "transfer", "qris"]);
+            $table->enum('metode_pembayaran', ["tunai", "debit", "qris"]);
             $table->decimal('total_harga', 12, 2);
             $table->decimal('total_bayar', 12, 2);
             $table->decimal('nominal_bayar', 12, 2)->nullable();

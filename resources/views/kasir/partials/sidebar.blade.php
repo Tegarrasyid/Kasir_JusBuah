@@ -25,8 +25,6 @@
           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
         </svg>
         <input class="customer-input" id="customer-name" type="text" placeholder="Nama pelanggan..." />
-        <button class="table-select" id="table-select-btn">🪑 T1</button>
-        <span id="table-no" style="display:none">T1</span>
       </div>
 
       <!-- Order Items -->
@@ -35,34 +33,26 @@
       <!-- Summary & Checkout -->
       <div class="order-summary">
 
-        <!-- Discount Row -->
-        <div class="order-discount-row">
-          <div class="discount-input-wrap">
-            <label>Diskon</label>
-            <input id="discount-input" type="number" min="0" max="100" value="0" placeholder="0" />
-            <span style="font-size:0.8rem;color:var(--text-light)">%</span>
-          </div>
-        </div>
-
         <!-- Summary Lines -->
         <div class="summary-row">
           <span>Subtotal</span>
           <span id="summary-subtotal">Rp 0</span>
         </div>
-        <div class="summary-row">
-          <span>Diskon</span>
-          <span id="summary-discount" style="color:var(--green)">Rp 0</span>
-        </div>
-        <div class="summary-row">
+        {{-- <div class="summary-row">
           <span>Pajak (10%)</span>
           <span id="summary-tax">Rp 0</span>
-        </div>
+        </div> --}}
 
         <div class="summary-divider"></div>
 
-        <div class="summary-total" style="margin-bottom:16px">
+        <div class="summary-total" style="margin-bottom:10px">
           <span class="total-label">Total</span>
           <span class="total-amount" id="total-amount">Rp 0</span>
+        </div>
+
+        <div class="payment-input">
+          <label for="bayar-input" class="payment-label">Nominal Bayar</label>
+          <input type="number" id="bayar-input" class="payment-field" placeholder="Masukkan uang pelanggan" required>
         </div>
 
         <!-- Payment Methods -->
@@ -75,15 +65,6 @@
           </button>
           <button class="pay-method" data-method="debit">
             <span class="pay-icon">💳</span>Debit
-          </button>
-          <button class="pay-method" data-method="kredit">
-            <span class="pay-icon">🏦</span>Kredit
-          </button>
-          <button class="pay-method" data-method="gopay">
-            <span class="pay-icon">🟢</span>GoPay
-          </button>
-          <button class="pay-method" data-method="ovo">
-            <span class="pay-icon">🟣</span>OVO
           </button>
         </div>
 

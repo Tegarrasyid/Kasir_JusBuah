@@ -36,7 +36,7 @@ kasir/
 - Pilih nama pelanggan & nomor meja
 - Diskon persentase
 - Otomatis hitung subtotal + diskon + pajak 10%
-- 6 metode pembayaran: Tunai, QRIS, Debit, Kredit, GoPay, OVO
+- 6 metode pembayaran: Tunai, QRIS, debit, Kredit, GoPay, OVO
 - Tombol checkout
 
 ### 🧾 Struk & Riwayat

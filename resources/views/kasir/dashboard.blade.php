@@ -52,4 +52,8 @@
   </div>
 </div>
 
+  <script>
+  window.PRODUCTS = @json($produk);
+  </script>
+
 @endsection

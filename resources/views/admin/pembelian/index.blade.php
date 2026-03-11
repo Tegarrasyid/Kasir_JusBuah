@@ -48,7 +48,6 @@
                     <td>Rp {{ number_format($d->total_harga) }}</td>
                     <td>{{ $d->tanggal_beli }}</td>
                     <td>
-                      <a href="{{ route('pembelian-stok.edit',$d->id) }}"class="btn btn-warning btn-sm">Edit</a>
                       <form action="{{ route('pembelian-stok.destroy',$d->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
