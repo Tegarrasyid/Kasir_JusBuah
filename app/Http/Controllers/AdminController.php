@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -121,5 +123,48 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'Admin berhasil dihapus.');
+    }
+
+    public function dashboardData(Request $request)
+    {
+        $period = $request->period ?? 'week';
+
+        if ($period == 'day') {
+            $start = Carbon::today();
+        } elseif ($period == 'week') {
+            $start = Carbon::now()->subDays(7);
+        } else {
+            $start = Carbon::now()->subDays(30);
+        }
+
+        $sales = Transaksi::with(['detailTransaksi.produk.kategori','user'])
+            ->where('created_at','>=',$start)
+            ->get();
+
+        $data = $sales->map(function($trx){
+
+            return [
+                "id" => $trx->kode_transaksi,
+                "timestamp" => $trx->created_at,
+                "kasir" => $trx->user->name ?? 'Kasir',
+                "total" => (int) $trx->total_harga,
+
+                "items" => $trx->detailTransaksi->map(function($d){
+
+                    return [
+                        "id" => $d->produk_id,
+                        "name" => $d->nama_produk,
+                        "price" => (int) $d->harga_satuan,
+                        "qty" => (int) $d->jumlah,
+                        "emoji" => "🍽️",
+                        "category" => $d->produk->kategori->nama ?? "Lainnya"
+                    ];
+
+                })->values()
+            ];
+
+        });
+
+        return response()->json($data);
     }
 }

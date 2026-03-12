@@ -15,9 +15,10 @@ const DashboardPage = (() => {
     return { revenue, orders, items, avg };
   }
 
+  
   /* ---- Previous period for comparison ---- */
   function getPrevStats(period) {
-    const allSales = Store.get('sales');
+    const allSales = window.allSales || [];
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     let start, prevStart, prevEnd;
@@ -140,24 +141,20 @@ const DashboardPage = (() => {
 
   /* ---- Category donut ---- */
   function renderDonut(sales) {
-    const cats = Store.get('categories');
-    const products = Store.get('products');
-
     const catRev = {};
-    cats.forEach(c => { catRev[c.id] = 0; });
     sales.forEach(s => {
       s.items.forEach(item => {
-        const prod = products.find(p => p.id === item.id);
-        if (prod) catRev[prod.catId] = (catRev[prod.catId] || 0) + item.price * item.qty;
+        const cat = item.category || "Lainnya";
+        if (!catRev[cat]) catRev[cat] = 0;
+        catRev[cat] += item.price * item.qty;
       });
     });
 
-    const sorted = cats.map(c => ({ ...c, rev: catRev[c.id] || 0 }))
-                       .filter(c => c.rev > 0)
-                       .sort((a,b) => b.rev - a.rev)
-                       .slice(0, 5);
+    const sorted = Object.entries(catRev)
+      .map(([name, rev]) => ({ name, rev }))
+      .sort((a, b) => b.rev - a.rev)
+      .slice(0, 5);
     const total = sorted.reduce((s, c) => s + c.rev, 0) || 1;
-
     const COLORS = ['#10b981','#3b82f6','#f59e0b','#a78bfa','#ef4444'];
     const r = 52, cx = 60, cy = 60, stroke = 20;
     const circ = 2 * Math.PI * r;
@@ -167,10 +164,12 @@ const DashboardPage = (() => {
       const dash = (c.rev / total) * circ;
       const path = `
         <circle cx="${cx}" cy="${cy}" r="${r}"
-          fill="none" stroke="${COLORS[i]}" stroke-width="${stroke}"
+          fill="none"
+          stroke="${COLORS[i]}"
+          stroke-width="${stroke}"
           stroke-dasharray="${dash.toFixed(2)} ${(circ - dash).toFixed(2)}"
           stroke-dashoffset="${(-offset).toFixed(2)}"
-          stroke-linecap="butt" />`;
+        />`;
       offset += dash;
       return path;
     }).join('');
@@ -180,17 +179,20 @@ const DashboardPage = (() => {
       svg.innerHTML = svgPaths;
       svg.setAttribute('viewBox', `0 0 ${cx*2} ${cy*2}`);
     }
-
     const legend = document.getElementById('donut-legend');
+
     if (legend) {
       legend.innerHTML = sorted.map((c, i) => `
         <div class="donut-leg-row">
           <span class="donut-leg-label">
             <span class="legend-dot" style="background:${COLORS[i]}"></span>
-            ${c.emoji} ${c.name}
+            ${c.name}
           </span>
-          <span class="donut-leg-val">${Math.round((c.rev/total)*100)}%</span>
-        </div>`).join('');
+          <span class="donut-leg-val">
+            ${Math.round((c.rev/total)*100)}%
+          </span>
+        </div>
+      `).join('');
     }
   }
 
@@ -259,13 +261,19 @@ const DashboardPage = (() => {
     });
   }
 
-  function render() {
-    const sales = Store.getSalesForPeriod(period);
+  async function fetchSales() {
+    const response = await fetch(`/admin/dashboard/data?period=${period}`);
+    const data = await response.json();
+    return data;
+  }
+  async function render() {
+    const sales = await fetchSales();
     renderStats(sales);
     renderBarChart(sales);
     renderDonut(sales);
     renderTopProducts(sales);
     renderRecentTxn(sales);
+
   }
 
   function init() {

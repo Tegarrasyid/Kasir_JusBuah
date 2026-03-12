@@ -110,91 +110,12 @@
       </div>
     </div>
 
-    <!-- =================== REPORTS =================== -->
-    <div class="page" id="page-reports">
-      <div class="page-heading">
-        <div class="page-heading-left">
-          <h1>Laporan Penjualan</h1>
-          <p>Analisa transaksi dan performa kasir</p>
-        </div>
-        <div class="page-actions">
-          <div class="period-selector">
-            <button class="report-period-btn" data-period="day">Hari Ini</button>
-            <button class="report-period-btn active" data-period="week">7 Hari</button>
-            <button class="report-period-btn" data-period="month">30 Hari</button>
-          </div>
-        </div>
-      </div>
+<script src="{{ asset('js/dashboard.js') }}"></script>
 
-      <!-- Summary cards -->
-      <div class="report-summary-grid">
-        <div class="report-card" style="animation-delay:0.05s">
-          <div class="report-card-label">Total Pendapatan</div>
-          <div class="report-card-value" id="report-revenue">Rp 0</div>
-          <div class="report-card-sub">Setelah pajak & diskon</div>
-        </div>
-        <div class="report-card" style="animation-delay:0.10s">
-          <div class="report-card-label">Total Transaksi</div>
-          <div class="report-card-value" id="report-orders">0</div>
-          <div class="report-card-sub">Seluruh kasir</div>
-        </div>
-        <div class="report-card" style="animation-delay:0.15s">
-          <div class="report-card-label">Item Terjual</div>
-          <div class="report-card-value" id="report-items">0</div>
-          <div class="report-card-sub">Total porsi/pcs</div>
-        </div>
-        <div class="report-card" style="animation-delay:0.20s">
-          <div class="report-card-label">Rata-rata Transaksi</div>
-          <div class="report-card-value" id="report-avg">Rp 0</div>
-          <div class="report-card-sub">Per order</div>
-        </div>
-        <div class="report-card" style="animation-delay:0.25s">
-          <div class="report-card-label">Total Pajak (10%)</div>
-          <div class="report-card-value" id="report-tax">Rp 0</div>
-          <div class="report-card-sub">PPN terkumpul</div>
-        </div>
-        <div class="report-card" style="animation-delay:0.30s">
-          <div class="report-card-label">Total Diskon</div>
-          <div class="report-card-value" id="report-disc">Rp 0</div>
-          <div class="report-card-sub">Diskon diberikan</div>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-        <!-- Payment breakdown -->
-        <div class="card">
-          <div class="card-header"><div class="card-title">💳 Breakdown Pembayaran</div></div>
-          <div class="table-wrap">
-            <table class="data-table">
-              <thead><tr><th>Metode</th><th>Transaksi</th><th>Total</th><th>%</th></tr></thead>
-              <tbody id="report-payment-table"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Kasir performance -->
-        <div class="card">
-          <div class="card-header"><div class="card-title">👤 Performa Kasir</div></div>
-          <div id="report-kasir-list"></div>
-        </div>
-      </div>
-
-      <!-- Full sales table -->
-      <div class="card" style="padding:0;overflow:hidden">
-        <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
-          <span style="font-weight:700;font-size:0.95rem">📋 Detail Transaksi</span>
-          <span style="font-size:0.78rem;color:var(--text-muted);margin-left:8px">(50 transaksi terbaru)</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr>
-              <th>No. Order</th><th>Waktu</th><th>Kasir</th><th>Item</th><th>Pembayaran</th><th>Total</th><th>Status</th>
-            </tr></thead>
-            <tbody id="report-sales-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+      DashboardPage.init();
+  });
+</script>
 
 @endsection
