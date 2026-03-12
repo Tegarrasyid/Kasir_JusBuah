@@ -7,6 +7,7 @@
   <!-- ============================
        TRANSAKSI PAGE
        ============================ -->
+<div class="container-kasir">
   <div class="transaksi-page" >
     <div class="page-heading">
       <div>
@@ -37,6 +38,15 @@
         <div class="txn-stat-value" id="stat-avg-value">Rp 0</div>
         <div class="txn-stat-sub">per transaksi</div>
       </div>
+      <div class="modal-overlay" id="receipt-modal">
+        <div class="modal" style="max-width:420px">
+          <div class="modal-header">
+            <span class="modal-title">🧾 Struk Pembayaran</span>
+            <button class="modal-close" id="receipt-close">✕</button>
+          </div>
+          <div id="receipt-content"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Table -->
@@ -65,13 +75,16 @@
       </table>
     </div>
   </div>
+</div>
 
   <script src="{{ asset('js/transactions.js') }}"></script>
 
   <script>
-  document.addEventListener("DOMContentLoaded", function(){
-      TransactionPage.init();
-  });
+    window.kasirName = "{{ Auth::user()->name }}";
+    document.addEventListener("DOMContentLoaded", function(){
+        TransactionPage.init();
+        ReceiptModal.init();
+    });
   </script>
 
 @endsection

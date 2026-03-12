@@ -77,10 +77,15 @@ const TransactionPage = (() => {
     tbody.querySelectorAll('.txn-action-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
+
+        console.log(btn.dataset.receipt); // cek ini
+
         try {
           const txn = JSON.parse(btn.dataset.receipt.replace(/&apos;/g,"'"));
           ReceiptModal.show(txn);
-        } catch(err) { console.error(err); }
+        } catch(err) {
+          console.error(err);
+        }
       });
     });
   }

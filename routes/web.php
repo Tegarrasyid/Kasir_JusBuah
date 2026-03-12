@@ -8,6 +8,7 @@ use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\ResepProdukController;
 use App\Http\Controllers\PembelianStokController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DetailTransaksiController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -79,5 +80,7 @@ Route::middleware(['auth'])->prefix('kasir')->group(function () {
     Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayat'])->name('transaksi.riwayat');
 
     Route::get('/transaksi/data', [TransaksiController::class, 'data']);
+
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('kasir.profile.update-password');
     
 });

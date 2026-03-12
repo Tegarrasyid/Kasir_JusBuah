@@ -71,24 +71,42 @@ const Navigation = (() => {
 /* ============================================
    Profile Page
    ============================================ */
-const ProfilePage = (() => {
-  function init() {
-    // Update profile stats from localStorage
-    const history = JSON.parse(localStorage.getItem('kasir_txn') || '[]');
-    const totalRev = history.reduce((s, t) => s + t.total, 0);
+  const ProfilePage = (() => {
 
-    setValue('profile-txn-count', history.length);
-    setValue('profile-revenue',   formatRp(totalRev));
-    setValue('profile-items-sold', history.reduce((s,t) => s + t.items.reduce((ss,i)=>ss+i.qty,0), 0));
-  }
+    async function getHistory() {
+      try {
+        const res = await fetch("/kasir/transaksi/data");
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        console.error("Gagal mengambil data transaksi", err);
+        return [];
+      }
+    }
 
-  function setValue(id, val) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val;
-  }
+    async function init() {
 
-  return { init };
-})();
+      const history = await getHistory();
+
+      const totalRev = history.reduce((s,t)=> s + (parseFloat(t.total) || 0), 0);
+
+      const totalItems = history.reduce((s,t)=>
+        s + t.items.reduce((ss,i)=> ss + i.qty, 0), 0
+      );
+
+      setValue('profile-txn-count', history.length);
+      setValue('profile-revenue', formatRp(totalRev));
+      setValue('profile-items-sold', totalItems);
+    }
+
+    function setValue(id,val){
+      const el = document.getElementById(id);
+      if(el) el.textContent = val;
+    }
+
+    return { init };
+
+  })();
 
 /* ============================================
    Navbar Clock & Greeting

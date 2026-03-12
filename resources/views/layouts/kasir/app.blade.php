@@ -21,7 +21,19 @@
       .print-btn, .modal-close { display: none !important; }
     }
     .app-outer { display: flex; flex-direction: column; min-height: 100vh; }
+    .profil-page{
+      padding-top:70px;
+    }
+    
+    .transaksi-page{
+      padding-top:70px;
+    }
 
+    .container-kasir{
+      max-width:1680px;
+      margin:auto;
+      padding:20px;
+    }
     .payment-input{
       display:flex;
       flex-direction:column;

@@ -2,10 +2,10 @@
 
 @section('title','Profil')
 @section('content')
-
   <!-- ============================
        PROFIL PAGE
        ============================ -->
+<div class="container-kasir">
   <div class="profil-page">
     <div class="page-heading">
       <div>
@@ -76,16 +76,36 @@
 
             <div style="display:flex;flex-direction:column;gap:10px;">
 
-                <button onclick="Toast.show('Fitur segera hadir!','warning')"
-                style="text-align:left;padding:12px 16px;background:var(--cream);border-radius:var(--radius-sm);font-size:0.85rem;font-weight:600;color:var(--text-mid);border:1.5px solid var(--border);cursor:pointer;">
-                🔒 Ganti Password
-                </button>
+                <form method="POST" action="{{ route('kasir.profile.update-password') }}">
+                  @csrf
 
-                <button onclick="Toast.show('Fitur segera hadir!','warning')"
-                style="text-align:left;padding:12px 16px;background:var(--cream);border-radius:var(--radius-sm);font-size:0.85rem;font-weight:600;color:var(--text-mid);border:1.5px solid var(--border);cursor:pointer;">
-                🖨 Pengaturan Printer
-                </button>
+                  <div style="margin-top:10px;">
+                      <input type="password" name="current_password"
+                      placeholder="Password Lama"
+                      required
+                      style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
+                  </div>
 
+                  <div>
+                      <input type="password" name="password"
+                      placeholder="Password Baru"
+                      required
+                      style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
+                  </div>
+
+                  <div>
+                      <input type="password" name="password_confirmation"
+                      placeholder="Konfirmasi Password Baru"
+                      required
+                      style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
+                  </div>
+
+                  <button type="submit"
+                  style="width:100%;padding:12px;background:#f59e0b;color:white;border:none;border-radius:6px;font-weight:700;cursor:pointer;">
+                  🔒 Ganti Password
+                  </button>
+
+                </form>
                 <!-- LOGOUT BUTTON -->
                 <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -100,6 +120,12 @@
       </div>
     </div>
   </div>
+</div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        ProfilePage.init();
+    });
+  </script>
 
 @endsection
