@@ -11,6 +11,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DetailTransaksiController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -65,6 +66,8 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::resource('bahan-baku', BahanBakuController::class);
     Route::resource('resep', ResepProdukController::class);
     Route::resource('pembelian-stok', PembelianStokController::class);
+    Route::get('/laporan', [LaporanController::class,'index'])->name('laporan.index');
+    Route::get('/laporan/{id}', [LaporanController::class,'show'])->name('laporan.show');
 
 });
 
