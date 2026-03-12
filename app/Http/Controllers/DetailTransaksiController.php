@@ -64,4 +64,6 @@ class DetailTransaksiController extends Controller
     {
         //
     }
+
+    
 }

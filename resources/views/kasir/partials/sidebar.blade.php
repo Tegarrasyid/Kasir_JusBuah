@@ -7,7 +7,6 @@
       <div class="order-header">
         <div class="order-header-top">
           <span class="order-title">🛒 Pesanan</span>
-          <span class="order-no" id="order-no">ORD-0001</span>
         </div>
         <div class="order-meta">
           <span class="order-meta-item">
@@ -17,14 +16,6 @@
             <span id="order-time-display">Sekarang</span>
           </span>
         </div>
-      </div>
-
-      <!-- Customer & Table -->
-      <div class="customer-row">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-        <input class="customer-input" id="customer-name" type="text" placeholder="Nama pelanggan..." />
       </div>
 
       <!-- Order Items -->

@@ -6,8 +6,15 @@ const TransactionPage = (() => {
 
   let filter = 'semua';
 
-  function getHistory() {
-    return JSON.parse(localStorage.getItem('kasir_txn') || '[]');
+  async function getHistory() {
+    try {
+      const res = await fetch('/kasir/transaksi/data');
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.error("Gagal mengambil data transaksi", err);
+      return [];
+    }
   }
 
   function formatDate(iso) {
@@ -24,18 +31,19 @@ const TransactionPage = (() => {
   function renderStats(history) {
     const today = new Date().toDateString();
     const todayTxn = history.filter(t => new Date(t.timestamp).toDateString() === today);
-    const totalToday = todayTxn.reduce((s, t) => s + t.total, 0);
-    const totalAll   = history.reduce((s, t) => s + t.total, 0);
+    const totalToday = todayTxn.reduce((s, t) => s + (parseFloat(t.total) || 0), 0);
+    const totalAll = history.reduce((s, t) => s + (parseFloat(t.total) || 0), 0);
     const totalItems = history.reduce((s, t) => s + t.items.reduce((ss,i) => ss+i.qty, 0), 0);
 
-    setValue('stat-today-count',   todayTxn.length);
+    setValue('stat-today-count', todayTxn.length);
     setValue('stat-today-revenue', formatRp(totalToday));
-    setValue('stat-total-txn',     history.length);
-    setValue('stat-total-revenue', formatRp(totalAll));
-    setValue('stat-total-items',   totalItems);
-    setValue('stat-avg-value',     history.length ? formatRp(Math.round(totalAll/history.length)) : 'Rp 0');
+    setValue('stat-total-txn', history.length);
+    setValue('stat-avg-value',
+      history.length ? formatRp(Math.round(totalAll / history.length)) : 'Rp 0'
+    );
   }
 
+  //// mulai
   function renderTable(history) {
     const tbody = document.getElementById('txn-tbody');
     if (!tbody) return;
@@ -55,7 +63,6 @@ const TransactionPage = (() => {
       <tr data-txn='${JSON.stringify(txn).replace(/'/g, "&apos;")}'>
         <td>${txn.id}</td>
         <td>${formatDate(txn.timestamp)}</td>
-        <td>${txn.customer}</td>
         <td>${txn.items.map(i => i.name).join(', ').substring(0,40)}${txn.items.length > 2 ? '…' : ''}</td>
         <td><span class="txn-method">${payLabel(txn.payment)}</span></td>
         <td style="font-weight:800;color:var(--amber-dark)">${formatRp(txn.total)}</td>
@@ -78,13 +85,15 @@ const TransactionPage = (() => {
     });
   }
 
+  //// akhir
   function setValue(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   }
 
-  function refresh() {
-    const history = getHistory();
+  async function refresh() {
+    const history = await getHistory();
+    console.log(history);
     renderStats(history);
     renderTable(history);
   }
@@ -94,11 +103,17 @@ const TransactionPage = (() => {
 
     // Filter buttons
     document.querySelectorAll('.txn-filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.txn-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.addEventListener('click', async () => {
+
+        document.querySelectorAll('.txn-filter-btn')
+          .forEach(b => b.classList.remove('active'));
+
         btn.classList.add('active');
         filter = btn.dataset.filter;
-        renderTable(getHistory());
+
+        const history = await getHistory();
+        renderTable(history);
+
       });
     });
   }
@@ -144,7 +159,7 @@ const ReceiptModal = (() => {
         <div class="receipt-items">
           ${txn.items.map(item => `
             <div class="receipt-item">
-              <span class="receipt-item-name">${item.emoji} ${item.name}${item.note ? `<br><span style="font-size:0.68rem;color:var(--text-light)">&nbsp;&nbsp;${item.note}</span>` : ''}</span>
+              <span class="receipt-item-name">${item.emoji || '🥤'} ${item.name}${item.note ? `<br><span style="font-size:0.68rem;color:var(--text-light)">&nbsp;&nbsp;${item.note}</span>` : ''}</span>
               <span class="receipt-item-qty">x${item.qty}</span>
               <span class="receipt-item-price">${formatRp(item.price * item.qty)}</span>
             </div>

@@ -53,7 +53,6 @@
           <tr>
             <th>No. Order</th>
             <th>Waktu</th>
-            <th>Pelanggan</th>
             <th>Item</th>
             <th>Pembayaran</th>
             <th>Total</th>
@@ -66,5 +65,13 @@
       </table>
     </div>
   </div>
+
+  <script src="{{ asset('js/transactions.js') }}"></script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function(){
+      TransactionPage.init();
+  });
+  </script>
 
 @endsection

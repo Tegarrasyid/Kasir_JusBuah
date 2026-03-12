@@ -195,37 +195,6 @@ class TransaksiController extends Controller
         return response()->json(['success' => false,'message' => $e->getMessage()],500);}
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     private function generateKode()
     {
@@ -239,6 +208,31 @@ class TransaksiController extends Controller
         $newNumber = str_pad($lastNumber + 1,3,'0',STR_PAD_LEFT);
 
         return 'TRX'.date('Ymd').$newNumber;
+    }
+
+    public function data()
+    {
+        $transaksi = Transaksi::with('detailTransaksi')->latest()->get();
+
+        $data = $transaksi->map(function($t){
+
+            return [
+                'id' => $t->kode_transaksi,
+                'timestamp' => $t->created_at,
+                'payment' => $t->metode_pembayaran,
+                'total' => $t->total_harga,
+                'items' => $t->detailTransaksi->map(function($d){
+                    return [
+                        'name' => $d->nama_produk,
+                        'qty' => $d->jumlah,
+                        'price' => $d->harga_satuan
+                    ];
+                })
+            ];
+
+        });
+
+        return response()->json($data);
     }
 
 }

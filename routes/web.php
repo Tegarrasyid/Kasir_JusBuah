@@ -70,18 +70,14 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 //route untuk kasir
 Route::middleware(['auth'])->prefix('kasir')->group(function () {
 
-    Route::get('/dashboard', [TransaksiController::class,'index'])
-        ->name('kasir.dashboard');
+    Route::get('/dashboard', [TransaksiController::class,'index'])->name('kasir.dashboard');
 
-    Route::post('/transaksi', [TransaksiController::class,'store'])
-        ->name('transaksi.store');
+    Route::post('/transaksi', [TransaksiController::class,'store'])->name('transaksi.store');
 
-    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayat'])
-        ->name('transaksi.riwayat');
+    Route::get('/profil', function () {$user = Auth::user(); return view('kasir.profil', compact('user'));})->name('kasir.profil');
 
-    Route::get('/profil', function () {
-        $user = Auth::user();
-        return view('kasir.profil', compact('user'));
-    })->name('kasir.profil');
+    Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayat'])->name('transaksi.riwayat');
 
+    Route::get('/transaksi/data', [TransaksiController::class, 'data']);
+    
 });
