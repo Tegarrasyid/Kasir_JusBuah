@@ -85,11 +85,8 @@ const Navigation = (() => {
     }
 
     async function init() {
-
       const history = await getHistory();
-
       const totalRev = history.reduce((s,t)=> s + (parseFloat(t.total) || 0), 0);
-
       const totalItems = history.reduce((s,t)=>
         s + t.items.reduce((ss,i)=> ss + i.qty, 0), 0
       );
@@ -103,7 +100,6 @@ const Navigation = (() => {
       const el = document.getElementById(id);
       if(el) el.textContent = val;
     }
-
     return { init };
 
   })();

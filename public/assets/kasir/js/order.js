@@ -187,51 +187,45 @@ const OrderPanel = (() => {
 
   /* ---- Checkout ---- */
   async function checkout() {
+    if (!items.length) return;
+    const payload = {
+      produk_id: items.map(i => i.id),
+      jumlah: items.map(i => i.qty),
+      metode: payMethod,
+      bayar: parseInt(document.getElementById('bayar-input').value)
+    };
+    try {
+      const response = await fetch('/kasir/transaksi', {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Accept':'application/json',
+          'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(payload)
+      });
 
-  if (!items.length) return;
+      const data = await response.json();
 
-  const payload = {
-    produk_id: items.map(i => i.id),
-    jumlah: items.map(i => i.qty),
-    metode: payMethod,
-    bayar: parseInt(document.getElementById('bayar-input').value)
-  };
+      if(!response.ok){
+        console.error(data);
+        Toast.show(data.message || 'Server error','error');
+        return;
+      }
 
-  try {
-
-    const response = await fetch('/kasir/transaksi', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Accept':'application/json',
-        'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await response.json();
-
-    if(!response.ok){
-      console.error(data);
-      Toast.show(data.message || 'Server error','error');
-      return;
+      if(data.success){
+        console.log("DATA TRANSAKSI:", data.transaksi);
+        ReceiptModal.show(data.transaksi);
+        items = [];
+        discount = 0;
+        render();
+        Toast.show('Pembayaran berhasil','success');
+      }
+    } catch(err){
+      console.error(err);
+      Toast.show('Transaksi gagal','error');
     }
-
-    if(data.success){
-      console.log("DATA TRANSAKSI:", data.transaksi);
-      ReceiptModal.show(data.transaksi);
-      items = [];
-      discount = 0;
-      render();
-      Toast.show('Pembayaran berhasil','success');
-    }
-
-  } catch(err){
-    console.error(err);
-    Toast.show('Transaksi gagal','error');
   }
-
-}
 
   /* ---- Init ---- */
   function init() {
@@ -244,12 +238,9 @@ const OrderPanel = (() => {
 
       if (bayarInput) {
         bayarInput.addEventListener("input", () => {
-
           const bayar = parseInt(bayarInput.value) || 0;
           const tot = total();
-
           const change = bayar - tot;
-
           if (changeDisplay) {
             changeDisplay.textContent = formatRp(change > 0 ? change : 0);
           }
@@ -258,7 +249,6 @@ const OrderPanel = (() => {
           if (checkoutBtn) {
             checkoutBtn.disabled = bayar < tot || items.length === 0;
           }
-
         });
       }
 
@@ -301,6 +291,5 @@ const OrderPanel = (() => {
       });
     }
   }
-
   return { init, addItem, render };
 })();

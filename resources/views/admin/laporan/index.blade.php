@@ -14,22 +14,9 @@
 
     <div class="page-actions">
         <div class="period-selector">
-
-            <a href="{{ route('laporan.index',['period'=>'day']) }}"
-            class="period-btn {{ request('period')=='day' ? 'active':'' }}">
-            Hari Ini
-            </a>
-
-            <a href="{{ route('laporan.index',['period'=>'week']) }}"
-            class="period-btn {{ request('period')=='week' ? 'active':'' }}">
-            7 Hari
-            </a>
-
-            <a href="{{ route('laporan.index',['period'=>'month']) }}"
-            class="period-btn {{ request('period')=='month' ? 'active':'' }}">
-            30 Hari
-            </a>
-
+            <a href="{{ route('laporan.index',['period'=>'day']) }}" class="period-btn {{ request('period')=='day' ? 'active':'' }}">Hari Ini</a>
+            <a href="{{ route('laporan.index',['period'=>'week']) }}" class="period-btn {{ request('period')=='week' ? 'active':'' }}">7 Hari</a>
+            <a href="{{ route('laporan.index',['period'=>'month']) }}" class="period-btn {{ request('period')=='month' ? 'active':'' }}">30 Hari</a>
         </div>
     </div>
 

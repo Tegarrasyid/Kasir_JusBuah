@@ -58,31 +58,31 @@
 <script src="{{ asset('assets/admin/js/store.js')}}"></script>
 <script src="{{ asset('assets/admin/js/dashboard.js')}}"></script>
 <script src="{{ asset('assets/admin/js/pages.js')}}"></script>
-    <script>
-        function updateTopbarClock() {
-            const clock = document.getElementById('topbar-clock');
-            if (!clock) return;
+{{-- script untuk jam dinavbar --}}
+<script>
+    function updateTopbarClock() {
+        const clock = document.getElementById('topbar-clock');
+        if (!clock) return;
+        const now = new Date();
+        const time = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        const date = now.toLocaleDateString('id-ID', {
+            weekday: 'short',
+            day: '2-digit',
+            month: 'short'
+        });
+        clock.textContent = `${time}`;
+        // clock.textContent = `${date} • ${time}`;
+    }
 
-            const now = new Date();
-
-            const time = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-
-            const date = now.toLocaleDateString('id-ID', {
-                weekday: 'short',
-                day: '2-digit',
-                month: 'short'
-            });
-
-            clock.textContent = `${time}`;
-            // clock.textContent = `${date} • ${time}`;
-        }
-
-        setInterval(updateTopbarClock, 1000);
-        updateTopbarClock();
-    </script>
+    setInterval(updateTopbarClock, 1000);
+    updateTopbarClock();
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){DashboardPage.init();});
+</script>
 </body>
 </html>

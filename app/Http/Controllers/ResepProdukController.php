@@ -15,7 +15,6 @@ class ResepProdukController extends Controller
     public function index()
     {
         $resep = ResepProduk::with(['produk','bahan'])->get()->groupBy('produk_id');
-
         return view('admin.resep.index',compact('resep'));  
     }
 
@@ -26,7 +25,6 @@ class ResepProdukController extends Controller
     {
         $produk = Produk::all();
         $bahan = BahanBaku::all();
-
         return view('admin.resep.create', compact('produk','bahan'));
     }
 
@@ -66,7 +64,6 @@ class ResepProdukController extends Controller
         $resep = ResepProduk::findOrFail($id);
         $produk = Produk::all();
         $bahan = BahanBaku::all();
-
         return view('admin.resep.edit', compact('resep','produk','bahan'));
     }
 
@@ -76,15 +73,13 @@ class ResepProdukController extends Controller
     public function update(Request $request,$id)
     {
         $resep = ResepProduk::findOrFail($id);
-
         $resep->update([
             'produk_id'=>$request->produk_id,
             'bahan_baku_id'=>$request->bahan_baku_id,
             'jumlah_dibutuhkan'=>$request->jumlah_dibutuhkan
         ]);
 
-        return redirect()->route('resep.index')
-            ->with('success','Resep berhasil diupdate');
+        return redirect()->route('resep.index')->with('success','Resep berhasil diupdate');
     }
 
     /**
@@ -95,8 +90,7 @@ class ResepProdukController extends Controller
     {
         ResepProduk::destroy($id);
 
-        return redirect()->route('resep.index')
-            ->with('success','Resep berhasil dihapus');
+        return redirect()->route('resep.index')->with('success','Resep berhasil dihapus');
     }
 
 }

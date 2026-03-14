@@ -15,7 +15,6 @@ class ProdukController extends Controller
     {
         $produk = Produk::with('kategori')->latest()->paginate(10);
         $kategori = KategoriProduk::all();
-
         return view('admin.produk.index', compact('produk','kategori'));
     }
 
@@ -70,7 +69,6 @@ class ProdukController extends Controller
     {
         $produk = Produk::findOrFail($id);
         $kategori = KategoriProduk::all();
-
         return view('admin.produk.edit', compact('produk','kategori'));
     }
 
@@ -80,7 +78,6 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $produk = Produk::findOrFail($id);
-
         if($request->hasFile('foto')){
             $foto = $request->file('foto')->store('produk','public');
         }else{

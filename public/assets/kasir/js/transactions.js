@@ -43,7 +43,7 @@ const TransactionPage = (() => {
     );
   }
 
-  //// mulai
+  //// filter pendapatan semua/hari ini
   function renderTable(history) {
     const tbody = document.getElementById('txn-tbody');
     if (!tbody) return;
@@ -77,9 +77,7 @@ const TransactionPage = (() => {
     tbody.querySelectorAll('.txn-action-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-
-        console.log(btn.dataset.receipt); // cek ini
-
+        console.log(btn.dataset.receipt);
         try {
           const txn = JSON.parse(btn.dataset.receipt.replace(/&apos;/g,"'"));
           ReceiptModal.show(txn);
@@ -90,7 +88,6 @@ const TransactionPage = (() => {
     });
   }
 
-  //// akhir
   function setValue(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
@@ -105,62 +102,49 @@ const TransactionPage = (() => {
 
   function init() {
     refresh();
-
     // Filter buttons
     document.querySelectorAll('.txn-filter-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
-
         document.querySelectorAll('.txn-filter-btn')
           .forEach(b => b.classList.remove('active'));
-
         btn.classList.add('active');
         filter = btn.dataset.filter;
-
         const history = await getHistory();
         renderTable(history);
-
       });
     });
   }
-
   return { init, refresh };
 })();
 
 /* ============================================
-   Receipt Modal
+   Receipt Modal/Struk
    ============================================ */
 
 const ReceiptModal = (() => {
-
   function show(txn) {
     const overlay = document.getElementById('receipt-modal');
     if (!overlay) return;
-
     const d = new Date(txn.timestamp);
     const dateStr = d.toLocaleDateString('id-ID', {
       weekday:'long', day:'2-digit', month:'long', year:'numeric'
     });
     const timeStr = d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
-
     document.getElementById('receipt-content').innerHTML = `
       <div class="receipt">
         <div class="receipt-header">
-          <div class="receipt-brand">Amerta</div>
+          <div class="receipt-brand"><img src="/assets/img/AMERTA.png" alt="Amerta Logo"></div>
           <div class="receipt-address">Jl. Kopi Enak No. 7, Purbalingga Kota</div>
           <div class="receipt-address">Telp: 0876-8765-8654</div>
         </div>
-
         <hr class="receipt-divider" />
-
         <div class="receipt-meta">
           <div><span>No. Order</span><span>${txn.id}</span></div>
           <div><span>Tanggal</span><span>${dateStr}</span></div>
           <div><span>Pukul</span><span>${timeStr}</span></div>
           <div><span>Kasir</span><span>${window.kasirName}</span></div>
         </div>
-
         <hr class="receipt-divider" />
-
         <div class="receipt-items">
           ${txn.items.map(item => `
             <div class="receipt-item">
@@ -170,9 +154,7 @@ const ReceiptModal = (() => {
             </div>
           `).join('')}
         </div>
-
         <hr class="receipt-divider" />
-
         <div class="receipt-totals">
           <div><span>Subtotal</span><span>${formatRp(txn.subtotal)}</span></div>
           <div><span>Bayar</span><span>${formatRp(txn.bayar)}</span></div>
@@ -189,7 +171,6 @@ const ReceiptModal = (() => {
             <span style="text-transform:capitalize">${txn.payment}</span>
           </div>
         </div>
-
         <hr class="receipt-divider" />
         <div class="receipt-footer">
           <p>✨ Terima kasih telah berkunjung!</p>
@@ -197,12 +178,10 @@ const ReceiptModal = (() => {
           <p style="margin-top:6px;font-size:0.65rem">Struk ini adalah bukti pembayaran yang sah</p>
         </div>
       </div>
-
       <button class="print-btn" onclick="window.print()">
         🖨 Cetak Struk
       </button>
     `;
-
     overlay.classList.add('open');
   }
 
@@ -218,6 +197,5 @@ const ReceiptModal = (() => {
       closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
     }
   }
-
   return { show, init };
 })();

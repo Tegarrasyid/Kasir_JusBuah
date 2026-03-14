@@ -40,7 +40,6 @@ Route::get('/home', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-
     Route::get('/dashboard', function () {
 
         if(Auth::user()->is_admin){
@@ -56,10 +55,7 @@ Route::middleware(['auth'])->group(function () {
 //route untuk admin
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-    
+    Route::get('/dashboard', function () {return view('admin.dashboard');})->name('admin.dashboard');
     Route::resource('users', AdminController::class);
     Route::resource('kategori', KategoriProdukController::class);
     Route::resource('produk', ProdukController::class);
@@ -76,15 +72,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth'])->prefix('kasir')->group(function () {
 
     Route::get('/dashboard', [TransaksiController::class,'index'])->name('kasir.dashboard');
-
     Route::post('/transaksi', [TransaksiController::class,'store'])->name('transaksi.store');
-
     Route::get('/profil', function () {$user = Auth::user(); return view('kasir.profil', compact('user'));})->name('kasir.profil');
-
     Route::get('/riwayat-transaksi', [TransaksiController::class, 'riwayat'])->name('transaksi.riwayat');
-
     Route::get('/transaksi/data', [TransaksiController::class, 'data']);
-
     Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('kasir.profile.update-password');
     
 });

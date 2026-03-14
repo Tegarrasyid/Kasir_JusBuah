@@ -52,7 +52,6 @@ class PembelianStokController extends Controller
         ]);
 
         $bahan = BahanBaku::find($request->bahan_baku_id);
-
         $bahan->stok_tersedia += $request->jumlah_beli;
         $bahan->save();
 
@@ -74,7 +73,6 @@ class PembelianStokController extends Controller
     {
         $data = PembelianStok::findOrFail($id);
         $bahan = BahanBaku::all();
-
         return view('admin.pembelian.edit',compact('data','bahan'));
     }
 
@@ -84,9 +82,7 @@ class PembelianStokController extends Controller
     public function update(Request $request,$id)
     {
         $data = PembelianStok::findOrFail($id);
-
         $total = $request->jumlah_beli * $request->harga_beli_satuan;
-
         $data->update([
             'bahan_baku_id' => $request->bahan_baku_id,
             'jumlah_beli' => $request->jumlah_beli,

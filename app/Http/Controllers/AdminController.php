@@ -56,8 +56,7 @@ class AdminController extends Controller
             'is_active' => $request->is_active
         ]);
 
-        return redirect()->route('users.index')
-            ->with('success','Pengguna berhasil ditambahkan');
+        return redirect()->route('users.index')->with('success','Pengguna berhasil ditambahkan');
     }
 
     /**
@@ -83,7 +82,6 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -110,8 +108,7 @@ class AdminController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.index')
-        ->with('success','Data pengguna berhasil diupdate');
+        return redirect()->route('users.index')->with('success','Data pengguna berhasil diupdate');
     }
 
     /**
@@ -121,14 +118,12 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-
         return redirect()->route('users.index')->with('success', 'Admin berhasil dihapus.');
     }
 
     public function dashboardData(Request $request)
     {
         $period = $request->period ?? 'week';
-
         if ($period == 'day') {
             $start = Carbon::today();
         } elseif ($period == 'week') {
@@ -137,20 +132,15 @@ class AdminController extends Controller
             $start = Carbon::now()->subDays(30);
         }
 
-        $sales = Transaksi::with(['detailTransaksi.produk.kategori','user'])
-            ->where('created_at','>=',$start)
-            ->get();
+        $sales = Transaksi::with(['detailTransaksi.produk.kategori','user'])->where('created_at','>=',$start)->get();
 
         $data = $sales->map(function($trx){
-
             return [
                 "id" => $trx->kode_transaksi,
                 "timestamp" => $trx->created_at,
                 "kasir" => $trx->user->name ?? 'Kasir',
                 "total" => (int) $trx->total_harga,
-
                 "items" => $trx->detailTransaksi->map(function($d){
-
                     return [
                         "id" => $d->produk_id,
                         "name" => $d->nama_produk,
@@ -159,7 +149,6 @@ class AdminController extends Controller
                         "emoji" => "🍽️",
                         "category" => $d->produk->kategori->nama ?? "Lainnya"
                     ];
-
                 })->values()
             ];
 

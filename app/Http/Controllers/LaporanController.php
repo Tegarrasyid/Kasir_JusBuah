@@ -12,22 +12,17 @@ class LaporanController extends Controller
 
     public function index(Request $request)
     {
-
         $period = $request->period;
-
         $query = Transaksi::with('user');
-
         if($period == 'day'){
             $query->whereDate('created_at', Carbon::today());
         }
-
         elseif($period == 'week'){
             $query->whereBetween('created_at', [
                 Carbon::now()->subDays(7),
                 Carbon::now()
             ]);
         }
-
         elseif($period == 'month'){
             $query->whereBetween('created_at', [
                 Carbon::now()->subDays(30),
@@ -36,7 +31,6 @@ class LaporanController extends Controller
         }
 
         $transaksi = $query->latest()->get();
-
         return view('admin.laporan.index',compact('transaksi','period'));
 
     }

@@ -77,7 +77,7 @@ const Nav = (() => {
   // }
 
   return { init, goto, current: () => current };
-})();
+})
 
 /* ================================================
    Topbar Clock

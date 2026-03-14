@@ -45,8 +45,7 @@ class BahanBakuController extends Controller
             'stok_minimum' => $request->stok_minimum,
         ]);
 
-        return redirect()->route('bahan-baku.index')
-            ->with('success','Bahan baku berhasil ditambahkan');
+        return redirect()->route('bahan-baku.index')->with('success','Bahan baku berhasil ditambahkan');
     }
 
     /**
@@ -80,7 +79,6 @@ class BahanBakuController extends Controller
         ]);
 
         $bahan = BahanBaku::findOrFail($id);
-
         $bahan->update([
             'nama_bahan' => $request->nama_bahan,
             'satuan' => $request->satuan,
@@ -100,9 +98,7 @@ class BahanBakuController extends Controller
     {
         $bahan = BahanBaku::findOrFail($id);
         $bahan->delete();
-
-        return redirect()->route('bahan-baku.index')
-            ->with('success','Bahan baku berhasil dihapus');
+        return redirect()->route('bahan-baku.index')->with('success','Bahan baku berhasil dihapus');
     }
 
 }

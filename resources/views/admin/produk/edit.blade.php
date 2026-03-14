@@ -4,8 +4,8 @@
 @section('breadcrumb','Produk')
 @section('content')
 
-    <div class="card card-body">
-        <form action="{{ route('produk.update',$produk->id) }}" method="POST" enctype="multipart/form-data">
+<div class="card card-body">
+    <form action="{{ route('produk.update',$produk->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -56,8 +56,7 @@
 
         <button class="btn btn-primary">Update</button>
         <a href="{{ route('produk.index') }}" class="btn btn-secondary">Batal</a>
-
-        </form>
-    </div>
+    </form>
+</div>
 
 @endsection

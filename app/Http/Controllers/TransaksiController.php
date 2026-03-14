@@ -26,20 +26,15 @@ class TransaksiController extends Controller
             ->get();
 
         foreach($produk as $p){
-
             $reseps = ResepProduk::where('produk_id',$p->id)->get();
             $stokCukup = true;
-
             foreach($reseps as $resep){
-
                 $bahan = BahanBaku::find($resep->bahan_baku_id);
-
                 if($bahan->stok_tersedia < $resep->jumlah_dibutuhkan){
                     $stokCukup = false;
                     break;
                 }
             }
-
             $p->stok_produk = $stokCukup;
         }
 
@@ -48,7 +43,7 @@ class TransaksiController extends Controller
 
     public function riwayat()
     {
-        $transaksi = Transaksi::latest()->get();
+        $transaksi = Transaksi::where('user_id', Auth::id())->latest()->get();
         return view('kasir.transaksi.riwayat', compact('transaksi'));
     }
 
@@ -65,28 +60,18 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        
         DB::beginTransaction();
-
         try{
-
             $total = 0;
             $detailItems = [];
-
             foreach($request->produk_id as $i => $produkId){
-
                 $produk = Produk::find($produkId);
                 $jumlah = $request->jumlah[$i];
-
                 $reseps = ResepProduk::where('produk_id',$produk->id)->get();
-
                 $stokCukup = true;
-
                 foreach($reseps as $resep){
-
                     $pakai = $resep->jumlah_dibutuhkan * $jumlah;
                     $bahan = BahanBaku::find($resep->bahan_baku_id);
-
                     if($bahan->stok_tersedia < $pakai){
                         $stokCukup = false;
                         break;
@@ -98,19 +83,15 @@ class TransaksiController extends Controller
                 }
 
                 $subtotal = $produk->harga_jual * $jumlah;
-
                 $detailItems[] = [
                     'produk'=>$produk,
                     'jumlah'=>$jumlah,
                     'subtotal'=>$subtotal,
                     'reseps'=>$reseps
                 ];
-
                 $total += $subtotal;
             }
-
             $kode = $this->generateKode();
-
             $transaksi = Transaksi::create([
                 'kode_transaksi'=>$kode,
                 'user_id'=>Auth::id(),
@@ -123,20 +104,14 @@ class TransaksiController extends Controller
             ]);
 
             foreach($request->produk_id as $i => $produkId){
-
                 $produk = Produk::find($produkId);
                 $jumlah = $request->jumlah[$i];
                 $subtotal = $produk->harga_jual * $jumlah;
-
                 $reseps = ResepProduk::where('produk_id',$produk->id)->get();
-
                 $stokCukup = true;
-
                 foreach($reseps as $resep){
-
                     $pakai = $resep->jumlah_dibutuhkan * $jumlah;
                     $bahan = BahanBaku::find($resep->bahan_baku_id);
-
                     if($bahan->stok_tersedia < $pakai){
                         $stokCukup = false;
                         break;
@@ -157,10 +132,8 @@ class TransaksiController extends Controller
                 ]);
 
                 foreach($reseps as $resep){
-
                     $pakai = $resep->jumlah_dibutuhkan * $jumlah;
                     $bahan = BahanBaku::find($resep->bahan_baku_id);
-
                     $bahan->stok_tersedia -= $pakai;
                     $bahan->save();
                 }
@@ -168,7 +141,6 @@ class TransaksiController extends Controller
 
             DB::commit();
             $transaksi->load('detailTransaksi');
-
             return response()->json([
                 'success' => true,
                 'transaksi' => [
@@ -189,7 +161,6 @@ class TransaksiController extends Controller
                     'payment' => $transaksi->metode_pembayaran
                 ]
             ]);
-
         }catch(\Exception $e){
         DB::rollBack();
         return response()->json(['success' => false,'message' => $e->getMessage()],500);}
@@ -199,23 +170,19 @@ class TransaksiController extends Controller
     private function generateKode()
     {
         $last = Transaksi::orderBy('kode_transaksi','desc')->first();
-
         if(!$last){
             return 'TRX'.date('Ymd').'001';
         }
 
         $lastNumber = substr($last->kode_transaksi,-3);
         $newNumber = str_pad($lastNumber + 1,3,'0',STR_PAD_LEFT);
-
         return 'TRX'.date('Ymd').$newNumber;
     }
 
     public function data()
     {
-        $transaksi = Transaksi::with('detailTransaksi')->latest()->get();
-
+        $transaksi = Transaksi::with('detailTransaksi')->where('user_id', Auth::id())->latest()->get();
         $data = $transaksi->map(function($t){
-
             return [
                 'id' => $t->kode_transaksi,
                 'timestamp' => $t->created_at,
@@ -229,9 +196,7 @@ class TransaksiController extends Controller
                     ];
                 })
             ];
-
         });
-
         return response()->json($data);
     }
 

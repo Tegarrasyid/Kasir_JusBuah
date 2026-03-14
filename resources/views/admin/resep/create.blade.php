@@ -4,8 +4,8 @@
 @section('breadcrumb','Resep Produk')
 @section('content')
 
-    <div class="card card-body">
-        <form action="{{ route('resep.store') }}" method="POST">
+<div class="card card-body">
+    <form action="{{ route('resep.store') }}" method="POST">
         @csrf
 
         <div class="form-group mb-3">
@@ -35,7 +35,7 @@
 
         <button class="btn btn-primary">Simpan</button>
         <a href="{{ route('resep.index') }}" class="btn btn-secondary">Batal</a>
-        </form>
-    </div>
+    </form>
+</div>
 
 @endsection

@@ -98,6 +98,17 @@
 <script src="{{ asset('assets/kasir/js/order.js')}}"></script>
 <script src="{{ asset('assets/kasir/js/transactions.js')}}"></script>
 <script src="{{ asset('assets/kasir/js/app.js')}}"></script>
+<script src="{{ asset('js/transactions.js') }}"></script>
+<script>
+  window.kasirName = "{{ Auth::user()->name }}";
+  document.addEventListener("DOMContentLoaded", function(){
+      TransactionPage.init();
+      ReceiptModal.init();
+      ProfilePage.init();
+  });
+  window.PRODUCTS = @json($produk);
+</script>
+
 
 </body>
 </html>
