@@ -4,9 +4,9 @@
 @section('content')
 
 
-<!-- ============================
-        TRANSAKSI PAGE
-============================ -->
+  <!-- ============================
+       TRANSAKSI PAGE
+       ============================ -->
 <div class="container-kasir">
   <div class="transaksi-page" >
     <div class="page-heading">
@@ -76,5 +76,15 @@
     </div>
   </div>
 </div>
+
+<script src="{{ asset('js/transactions.js') }}"></script>
+
+<script>
+  window.kasirName = "{{ Auth::user()->name }}";
+  document.addEventListener("DOMContentLoaded", function(){
+      TransactionPage.init();
+      ReceiptModal.init();
+  });
+</script>
 
 @endsection

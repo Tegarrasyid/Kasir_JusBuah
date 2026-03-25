@@ -7,7 +7,6 @@
       KASIR PAGE (Product + Order)
       ============================ -->
 <div class="app-layout" id="kasir-layout">
-
   <!-- Product Area -->
   <div class="products-area">
     <!-- Toolbar -->
@@ -38,8 +37,8 @@
 </div>
 
 <!-- ============================
-    RECEIPT MODAL
-    ============================ -->
+     RECEIPT MODAL
+     ============================ -->
 <div class="modal-overlay" id="receipt-modal">
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
@@ -49,5 +48,10 @@
     <div id="receipt-content"></div>
   </div>
 </div>
+
+<script>
+  window.PRODUCTS = @json($produk);
+  window.kasirName = "{{ Auth::user()->name }}";
+</script>
 
 @endsection

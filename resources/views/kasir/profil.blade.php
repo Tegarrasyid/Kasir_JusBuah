@@ -19,6 +19,7 @@
       <div class="profile-card">
         <div class="profile-avatar-lg"><img src="{{ asset('storage/'.Auth::user()->foto) }}" alt="Foto Profil"></div>
         <div class="profile-name">{{ Auth::user()->name }}</div>
+        <div class="profile-role">Kasir Senior</div>
 
         <div class="profile-stats">
           <div class="profile-stat">
@@ -47,10 +48,10 @@
           <span class="detail-label">Email</span>
           <span class="detail-value">{{ Auth::user()->email }}</span>
         </div>
-        {{-- <div class="detail-row">
+        <div class="detail-row">
           <span class="detail-label">Jabatan</span>
           <span class="detail-value">Kasir Senior</span>
-        </div> --}}
+        </div>
         <div class="detail-row">
           <span class="detail-label">Shift</span>
           <span class="detail-value">08:00 – 16:00 WIB</span>
@@ -69,54 +70,62 @@
         </div>
 
         <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
-          <div style="font-family:var(--font-display);font-size:1rem;font-weight:900;margin-bottom:14px">
-              Pengaturan Cepat
-          </div>
+            <div style="font-family:var(--font-display);font-size:1rem;font-weight:900;margin-bottom:14px">
+                Pengaturan Cepat
+            </div>
 
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <form method="POST" action="{{ route('kasir.profile.update-password') }}">
-              @csrf
+            <div style="display:flex;flex-direction:column;gap:10px;">
 
-              <div style="margin-top:10px;">
-                  <input type="password" name="current_password"
-                  placeholder="Password Lama"
-                  required
-                  style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
-              </div>
+                <form method="POST" action="{{ route('kasir.profile.update-password') }}">
+                  @csrf
 
-              <div>
-                  <input type="password" name="password"
-                  placeholder="Password Baru"
-                  required
-                  style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
-              </div>
+                  <div style="margin-top:10px;">
+                      <input type="password" name="current_password"
+                      placeholder="Password Lama"
+                      required
+                      style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
+                  </div>
 
-              <div>
-                  <input type="password" name="password_confirmation"
-                  placeholder="Konfirmasi Password Baru"
-                  required
-                  style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
-              </div>
+                  <div>
+                      <input type="password" name="password"
+                      placeholder="Password Baru"
+                      required
+                      style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
+                  </div>
 
-              <button type="submit"
-              style="width:100%;padding:12px;background:#f59e0b;color:white;border:none;border-radius:6px;font-weight:700;cursor:pointer;">
-              🔒 Ganti Password
-              </button>
+                  <div>
+                      <input type="password" name="password_confirmation"
+                      placeholder="Konfirmasi Password Baru"
+                      required
+                      style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:6px;">
+                  </div>
 
-            </form>
-            <!-- LOGOUT BUTTON -->
-            <form method="POST" action="{{ route('logout') }}">
-              @csrf
-              <button type="submit"
-              style="width:100%;text-align:left;padding:12px 16px;background:#fee2e2;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:700;color:#dc2626;border:1.5px solid rgba(239,68,68,0.3);cursor:pointer;">
-              🚪 Logout
-              </button>
-            </form>
-          </div>
+                  <button type="submit"
+                  style="width:100%;padding:12px;background:#f59e0b;color:white;border:none;border-radius:6px;font-weight:700;cursor:pointer;">
+                  🔒 Ganti Password
+                  </button>
+
+                </form>
+                <!-- LOGOUT BUTTON -->
+                <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                style="width:100%;text-align:left;padding:12px 16px;background:#fee2e2;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:700;color:#dc2626;border:1.5px solid rgba(239,68,68,0.3);cursor:pointer;">
+                🚪 Logout
+                </button>
+                </form>
+
+            </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        ProfilePage.init();
+    });
+  </script>
 
 @endsection
