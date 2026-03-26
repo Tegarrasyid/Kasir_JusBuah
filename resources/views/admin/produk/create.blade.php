@@ -35,6 +35,16 @@
             <input type="number" name="harga_jual" class="form-control">
         </div>
 
+        <div class="form-group">
+            <label>Harga Beli</label>
+            <input type="number" name="harga_beli" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Harga Diskon</label>
+            <input type="number" name="harga_diskon" class="form-control">
+        </div>
+
         <div class="form-group mb-3">
             <label>Foto Produk</label>
             <input type="file" name="foto" class="form-control">

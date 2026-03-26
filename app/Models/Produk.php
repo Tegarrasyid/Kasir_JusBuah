@@ -13,6 +13,8 @@ class Produk extends Model
         'kategori_id',
         'deskripsi',
         'harga_jual',
+        'harga_beli',
+        'harga_diskon',
         'foto',
         'is_available'
     ];

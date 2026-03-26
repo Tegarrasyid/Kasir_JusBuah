@@ -674,10 +674,10 @@ const ReportsPage = (() => {
     const revenue  = sales.reduce((s, t) => s + t.total, 0);
     const orders   = sales.length;
     const items    = sales.reduce((s, t) => s + t.items.reduce((ss,i)=>ss+i.qty,0), 0);
-    const avg      = orders ? Math.round(revenue / orders) : 0;
+    const profit   = sales.reduce((s, t) => s + (t.profit || 0), 0);
     const tax      = sales.reduce((s, t) => s + (t.tax||0), 0);
     const discount = sales.reduce((s, t) => s + (t.discount||0), 0);
-    return { revenue, orders, items, avg, tax, discount };
+    return { revenue, orders, items, profit, tax, discount };
   }
 
   function renderSummary(sales) {
@@ -686,7 +686,7 @@ const ReportsPage = (() => {
       'report-revenue': fRpFull(r.revenue),
       'report-orders':  r.orders + ' transaksi',
       'report-items':   r.items + ' item',
-      'report-avg':     fRpFull(r.avg),
+      'report-avg':     fRpFull(r.profit),
       'report-tax':     fRpFull(r.tax),
       'report-disc':    fRpFull(r.discount),
     };

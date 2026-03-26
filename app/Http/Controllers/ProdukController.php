@@ -36,6 +36,8 @@ class ProdukController extends Controller
             'nama_produk' => 'required',
             'kategori_id' => 'required',
             'harga_jual' => 'required',
+            'harga_beli' => 'required',
+            'harga_diskon' => 'nullable|lte:harga_jual',
         ]);
 
         if($request->hasFile('foto')){
@@ -47,6 +49,8 @@ class ProdukController extends Controller
             'kategori_id' => $request->kategori_id,
             'deskripsi' => $request->deskripsi,
             'harga_jual' => $request->harga_jual,
+            'harga_beli' => $request->harga_beli,
+            'harga_diskon' => $request->harga_diskon,
             'foto' => $foto ?? null,
             'is_available' => $request->is_available
         ]);
@@ -77,6 +81,14 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama_produk' => 'required',
+            'kategori_id' => 'required',
+            'harga_jual' => 'required',
+            'harga_beli' => 'required',
+            'harga_diskon' => 'nullable|lte:harga_jual',
+        ]);
+
         $produk = Produk::findOrFail($id);
         if($request->hasFile('foto')){
             $foto = $request->file('foto')->store('produk','public');
@@ -89,6 +101,8 @@ class ProdukController extends Controller
             'kategori_id' => $request->kategori_id,
             'deskripsi' => $request->deskripsi,
             'harga_jual' => $request->harga_jual,
+            'harga_beli' => $request->harga_beli, 
+            'harga_diskon' => $request->harga_diskon,
             'foto' => $foto,
             'is_available' => $request->is_available
         ]);

@@ -36,6 +36,16 @@
         </div>
 
         <div class="form-group mb-3">
+            <label>Harga Beli</label>
+            <input type="number" name="harga_beli" class="form-control" value="{{ $produk->harga_beli }}">
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Harga Diskon</label>
+            <input type="number" name="harga_diskon" class="form-control" value="{{ $produk->harga_diskon }}">
+        </div>
+
+        <div class="form-group mb-3">
             @if($produk->foto)
                 <img src="{{ asset('storage/'.$produk->foto) }}" width="80">
             @endif
