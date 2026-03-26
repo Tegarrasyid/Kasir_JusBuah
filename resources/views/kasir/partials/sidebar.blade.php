@@ -28,10 +28,10 @@
       <span>Subtotal</span>
       <span id="summary-subtotal">Rp 0</span>
     </div>
-    {{-- <div class="summary-row">
-      <span>Pajak (10%)</span>
-      <span id="summary-tax">Rp 0</span>
-    </div> --}}
+    <div class="summary-row">
+      <span>Diskon</span>
+      <span id="summary-discount" style="color:var(--green)">Rp 0</span>
+    </div>
 
     <div class="summary-divider"></div>
 

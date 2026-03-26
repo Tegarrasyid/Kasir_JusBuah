@@ -82,7 +82,12 @@ class TransaksiController extends Controller
                     continue;
                 }
 
-                $subtotal = $produk->harga_jual * $jumlah;
+                $harga = $produk->harga_jual;
+                if($produk->diskon_persen > 0){
+                    $harga = $harga - ($harga * $produk->diskon_persen / 100);
+                }
+
+                $subtotal = $harga * $jumlah;
                 $detailItems[] = [
                     'produk'=>$produk,
                     'jumlah'=>$jumlah,
@@ -106,7 +111,11 @@ class TransaksiController extends Controller
             foreach($request->produk_id as $i => $produkId){
                 $produk = Produk::find($produkId);
                 $jumlah = $request->jumlah[$i];
-                $subtotal = $produk->harga_jual * $jumlah;
+                $harga = $produk->harga_jual;
+                if($produk->diskon_persen > 0){
+                    $harga = $harga - ($harga * $produk->diskon_persen / 100);
+                }
+                $subtotal = $harga * $jumlah;
                 $reseps = ResepProduk::where('produk_id',$produk->id)->get();
                 $stokCukup = true;
                 foreach($reseps as $resep){
@@ -126,7 +135,7 @@ class TransaksiController extends Controller
                     'transaksi_id'=>$transaksi->id,
                     'produk_id'=>$produk->id,
                     'nama_produk'=>$produk->nama_produk,
-                    'harga_satuan'=>$produk->harga_jual,
+                    'harga_satuan'=>$harga,
                     'jumlah'=>$jumlah,
                     'subtotal'=>$subtotal
                 ]);

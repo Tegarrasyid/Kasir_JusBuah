@@ -14,7 +14,7 @@ class Produk extends Model
         'deskripsi',
         'harga_jual',
         'harga_beli',
-        'harga_diskon',
+        'diskon_persen',
         'foto',
         'is_available'
     ];

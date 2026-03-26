@@ -14,6 +14,7 @@ const ProductCatalog = (() => {
     id: p.id,
     name: p.nama_produk,
     price: p.harga_jual,
+    discount_percent: p.diskon_persen || 0, 
     category: p.nama_kategori || 'lainnya',
     emoji: p.emoji || '🍽',
     variant: p.deskripsi || '',
@@ -136,7 +137,8 @@ const ProductCatalog = (() => {
           id: product.id,
           name: product.name,
           price: product.price,
-          emoji: product.emoji
+          emoji: product.emoji,
+          discount_percent: product.discount_percent
         });
       });
     });
