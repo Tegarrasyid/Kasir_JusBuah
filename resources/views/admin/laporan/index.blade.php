@@ -19,6 +19,29 @@
             <a href="{{ route('laporan.index',['period'=>'month']) }}" class="period-btn {{ request('period')=='month' ? 'active':'' }}">30 Hari</a>
         </div>
     </div>
+    
+    <br>
+
+    <div class="card mb-3" style="padding:15px;">
+        <form method="GET" action="{{ route('laporan.index') }}">
+            <div style="display:flex;gap:10px;align-items:center;">
+                
+                <input type="date" name="start_date" class="form-control"
+                    value="{{ request('start_date') }}">
+
+                <input type="date" name="end_date" class="form-control"
+                    value="{{ request('end_date') }}">
+
+                <button type="submit" class="btn btn-primary">Filter</button>
+
+                <a href="{{ route('laporan.index') }}" class="btn btn-secondary">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <br>
 
     <div class="card" style="padding:0;overflow:hidden">
         <div class="table-wrap">

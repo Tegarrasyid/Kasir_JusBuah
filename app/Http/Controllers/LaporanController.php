@@ -12,27 +12,28 @@ class LaporanController extends Controller
 
     public function index(Request $request)
     {
-        $period = $request->period;
-        $query = Transaksi::with('user');
-        if($period == 'day'){
-            $query->whereDate('created_at', Carbon::today());
+        $query = Transaksi::with('user')->latest();
+
+        // FILTER PERIOD (yang tombol atas)
+        if ($request->period == 'day') {
+            $query->whereDate('created_at', today());
+        } elseif ($request->period == 'week') {
+            $query->where('created_at', '>=', now()->subDays(7));
+        } elseif ($request->period == 'month') {
+            $query->where('created_at', '>=', now()->subDays(30));
         }
-        elseif($period == 'week'){
+
+        // FILTER TANGGAL CUSTOM
+        if ($request->start_date && $request->end_date) {
             $query->whereBetween('created_at', [
-                Carbon::now()->subDays(7),
-                Carbon::now()
-            ]);
-        }
-        elseif($period == 'month'){
-            $query->whereBetween('created_at', [
-                Carbon::now()->subDays(30),
-                Carbon::now()
+                $request->start_date . ' 00:00:00',
+                $request->end_date . ' 23:59:59'
             ]);
         }
 
-        $transaksi = $query->latest()->get();
-        return view('admin.laporan.index',compact('transaksi','period'));
+        $transaksi = $query->get();
 
+        return view('admin.laporan.index', compact('transaksi'));
     }
 
 
