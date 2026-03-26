@@ -135,25 +135,39 @@ class AdminController extends Controller
         $sales = Transaksi::with(['detailTransaksi.produk.kategori','user'])->where('created_at','>=',$start)->get();
 
         $data = $sales->map(function($trx){
+
+            $totalProfit = 0; 
+
+            $items = $trx->detailTransaksi->map(function($d) use (&$totalProfit){
+
+                $hargaJual = $d->harga_satuan;
+                $hargaBeli = $d->produk->harga_beli ?? 0;
+
+                $profit = ($hargaJual - $hargaBeli) * $d->jumlah;
+
+                $totalProfit += $profit;
+
+                return [
+                    "id" => $d->produk_id,
+                    "name" => $d->nama_produk,
+                    "price" => (int) $hargaJual,
+                    "qty" => (int) $d->jumlah,
+                    "emoji" => "🍽️",
+                    "category" => $d->produk->kategori->nama ?? "Lainnya"
+                ];
+            })->values();
+
             return [
                 "id" => $trx->kode_transaksi,
                 "timestamp" => $trx->created_at,
                 "kasir" => $trx->user->name ?? 'Kasir',
                 "total" => (int) $trx->total_harga,
-                "items" => $trx->detailTransaksi->map(function($d){
-                    return [
-                        "id" => $d->produk_id,
-                        "name" => $d->nama_produk,
-                        "price" => (int) $d->harga_satuan,
-                        "qty" => (int) $d->jumlah,
-                        "emoji" => "🍽️",
-                        "category" => $d->produk->kategori->nama ?? "Lainnya"
-                    ];
-                })->values()
+                "profit" => (int) $totalProfit, 
+                "items" => $items
             ];
 
         });
-
+        
         return response()->json($data);
     }
 }

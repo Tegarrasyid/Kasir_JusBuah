@@ -11,8 +11,8 @@ const DashboardPage = (() => {
     const revenue = sales.reduce((s, t) => s + t.total, 0);
     const orders  = sales.length;
     const items   = sales.reduce((s, t) => s + t.items.reduce((ss,i)=>ss+i.qty,0), 0);
-    const avg     = orders ? Math.round(revenue / orders) : 0;
-    return { revenue, orders, items, avg };
+    const profit = sales.reduce((s, t) => s + (t.profit || 0), 0);
+    return { revenue, orders, items, profit };
   }
 
   
@@ -56,13 +56,13 @@ const DashboardPage = (() => {
     const tRev  = trend(s.revenue, prev.revenue);
     const tOrd  = trend(s.orders,  prev.orders);
     const tItem = trend(s.items,   prev.items);
-    const tAvg  = trend(s.avg,     prev.avg);
+    const tProfit = trend(s.profit, prev.profit);
 
     const cards = [
       { id:'stat-revenue', value: fRp(s.revenue),      label:'Total Pendapatan', icon:'💰', color:'var(--emerald-dim)', t: tRev  },
       { id:'stat-orders',  value: s.orders,            label:'Jumlah Transaksi', icon:'🧾', color:'var(--blue-dim)',    t: tOrd  },
       { id:'stat-items',   value: s.items,             label:'Item Terjual',     icon:'📦', color:'var(--purple-dim)',  t: tItem },
-      { id:'stat-avg',     value: fRp(s.avg),          label:'Rata-rata / Order',icon:'📈', color:'var(--amber-dim)',   t: tAvg  },
+      { id:'stat-avg',     value: fRp(s.profit),       label:'Total Profit',     icon:'📈', color:'var(--amber-dim)',   t: tProfit },
     ];
 
     cards.forEach(c => {

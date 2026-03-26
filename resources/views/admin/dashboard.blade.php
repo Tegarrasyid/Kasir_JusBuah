@@ -58,8 +58,8 @@
         <span class="stat-trend trend-up">▲ 0%</span>
       </div>
       <div class="stat-value">Rp 0</div>
-      <div class="stat-label">Rata-rata / Order</div>
-      <div class="stat-sub">Nilai rata-rata transaksi</div>
+      <div class="stat-label">Total Profit</div>
+      <div class="stat-sub">Keuntungan dari penjualan</div>
     </div>
   </div>
 
