@@ -51,9 +51,14 @@
     </div>
 
     <div class="payment-input">
-      <label for="bayar-input" class="payment-label">Nominal Bayar</label>
-      <input type="number" id="bayar-input" class="payment-field" placeholder="Masukkan uang pelanggan" required>
-    </div>
+    <label for="bayar-input" class="payment-label">Nominal Bayar</label>
+    <input type="number" id="bayar-input" class="payment-field" placeholder="Masukkan uang pelanggan" required>
+  </div>
+
+  <div class="payment-input" id="debit-input-group" style="display:none;">
+    <label for="debit-id" class="payment-label">ID Debit</label>
+    <input type="text" id="debit-id" class="payment-field" placeholder="Masukkan ID / No Referensi">
+  </div>
 
     <div class="summary-row">
       <span>Kembalian</span>

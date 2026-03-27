@@ -105,6 +105,7 @@ class TransaksiController extends Controller
                 'total_harga'=>$total,
                 'total_bayar'=>$total,
                 'nominal_bayar'=>$request->bayar,
+                'debit_id'=>$request->debit_id,
                 'kembalian'=>$request->bayar - $total,
                 'status'=>'selesai'
             ]);

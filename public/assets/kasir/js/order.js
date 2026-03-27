@@ -235,11 +235,21 @@ const OrderPanel = (() => {
   /* ---- Checkout ---- */
   async function checkout() {
     if (!items.length) return;
+
+    //validasi debit
+    if (payMethod === 'debit') {
+      const debitId = document.getElementById('debit-id').value;
+      if (!debitId) {
+        Toast.show('ID Debit wajib diisi', 'error');
+        return;
+      }
+    }
     const payload = {
       produk_id: items.map(i => i.id),
       jumlah: items.map(i => i.qty),
       metode: payMethod,
-      bayar: parseInt(document.getElementById('bayar-input').value)
+      bayar: parseInt(document.getElementById('bayar-input').value),
+      debit_id: payMethod === 'debit' ? document.getElementById('debit-id').value: null
     };
     try {
       const response = await fetch('/kasir/transaksi', {
@@ -263,6 +273,15 @@ const OrderPanel = (() => {
       if(data.success){
         console.log("DATA TRANSAKSI:", data.transaksi);
 
+        const debitField = document.getElementById('debit-id');
+        if (debitField) debitField.value = '';
+
+        const bayarInput = document.getElementById('bayar-input');
+        if (bayarInput) bayarInput.value = '';
+
+        const changeDisplay = document.getElementById('summary-change');
+        if (changeDisplay) changeDisplay.textContent = formatRp(0);
+
         if(data.transaksi.payment === 'qris'){
           window.lastTransaction = data.transaksi;
           showQR(data.transaksi.qr);
@@ -273,6 +292,7 @@ const OrderPanel = (() => {
         discount = 0;
         items = [];
         render();
+
         Toast.show('Pembayaran berhasil','success');
       }
     } catch(err){
@@ -341,7 +361,18 @@ const OrderPanel = (() => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.pay-method').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
+
         payMethod = btn.dataset.method;
+
+        const debitWrapper = document.getElementById('debit-input-group');
+        const debitField = document.getElementById('debit-id');
+
+        if (payMethod === 'debit') {
+          debitWrapper.style.display = 'flex';
+        } else {
+          debitWrapper.style.display = 'none';
+          if (debitField) debitField.value = '';
+        }
       });
     });
     

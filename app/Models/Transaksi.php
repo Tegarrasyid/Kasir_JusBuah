@@ -17,7 +17,8 @@ class Transaksi extends Model
         'nominal_bayar',
         'kembalian',
         'status',
-        'catatan'
+        'catatan',
+        'debit_id'
     ];
 
     public function user()
