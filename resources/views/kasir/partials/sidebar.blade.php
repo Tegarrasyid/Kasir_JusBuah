@@ -2,6 +2,16 @@
       ORDER SIDEBAR (Right)
       ============================ -->
 <aside class="order-sidebar" id="order-sidebar">
+
+  {{-- QR Code --}}
+  <div id="qr-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:10px; text-align:center; display:flex; flex-direction:column; gap:12px;">
+      <h3 >Scan QR untuk Pembayaran</h3>
+      <div id="qr-container"></div>
+      <button onclick="confirmQRPayment()">✅ Sudah Dibayar</button>
+      <button onclick="closeQR()">Tutup</button>
+    </div>
+  </div>
   <!-- Order Header -->
   <div class="order-header">
     <div class="order-header-top">

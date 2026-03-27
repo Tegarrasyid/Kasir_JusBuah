@@ -262,9 +262,16 @@ const OrderPanel = (() => {
 
       if(data.success){
         console.log("DATA TRANSAKSI:", data.transaksi);
-        ReceiptModal.show(data.transaksi);
-        items = [];
+
+        if(data.transaksi.payment === 'qris'){
+          window.lastTransaction = data.transaksi;
+          showQR(data.transaksi.qr);
+        } else {
+          ReceiptModal.show(data.transaksi);
+        }
+
         discount = 0;
+        items = [];
         render();
         Toast.show('Pembayaran berhasil','success');
       }
@@ -273,6 +280,31 @@ const OrderPanel = (() => {
       Toast.show('Transaksi gagal','error');
     }
   }
+
+  function showQR(qrHtml){
+    const modal = document.getElementById('qr-modal');
+    const container = document.getElementById('qr-container');
+
+    container.innerHTML = qrHtml;
+    modal.style.display = 'flex';
+  }
+
+  function confirmQRPayment(){
+    closeQR();
+
+    if(window.lastTransaction){
+      ReceiptModal.show(window.lastTransaction);
+    }
+  }
+
+  // biar bisa dipanggil dari HTML
+  window.confirmQRPayment = confirmQRPayment;
+
+  function closeQR(){
+    document.getElementById('qr-modal').style.display = 'none';
+  }
+  
+  window.closeQR = closeQR;
 
   /* ---- Init ---- */
   function init() {
@@ -312,7 +344,7 @@ const OrderPanel = (() => {
         payMethod = btn.dataset.method;
       });
     });
-
+    
     // Checkout
     // const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) {

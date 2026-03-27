@@ -10,6 +10,7 @@ use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TransaksiController extends Controller
 {
@@ -150,6 +151,9 @@ class TransaksiController extends Controller
 
             DB::commit();
             $transaksi->load('detailTransaksi');
+            $qr = (string) QrCode::size(200)->generate(
+                "TRX:".$transaksi->kode_transaksi."|TOTAL:".$total
+            );
             return response()->json([
                 'success' => true,
                 'transaksi' => [
@@ -167,7 +171,8 @@ class TransaksiController extends Controller
                     'total' => $transaksi->total_harga,
                     'bayar' => $transaksi->nominal_bayar,
                     'change' => $transaksi->kembalian,
-                    'payment' => $transaksi->metode_pembayaran
+                    'payment' => $transaksi->metode_pembayaran,
+                    'qr' => $qr
                 ]
             ]);
         }catch(\Exception $e){
