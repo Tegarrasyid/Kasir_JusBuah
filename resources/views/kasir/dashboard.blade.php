@@ -36,18 +36,6 @@
 
 </div>
 
-<!-- ============================
-     RECEIPT MODAL
-     ============================ -->
-<div class="modal-overlay" id="receipt-modal">
-  <div class="modal" style="max-width:420px">
-    <div class="modal-header">
-      <span class="modal-title">🧾 Struk Pembayaran</span>
-      <button class="modal-close" id="receipt-close">✕</button>
-    </div>
-    <div id="receipt-content"></div>
-  </div>
-</div>
 
 <script>
   window.PRODUCTS = @json($produk);

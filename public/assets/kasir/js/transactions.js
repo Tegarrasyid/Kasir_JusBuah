@@ -178,23 +178,73 @@ const ReceiptModal = (() => {
           <p style="margin-top:6px;font-size:0.65rem">Struk ini adalah bukti pembayaran yang sah</p>
         </div>
       </div>
-      <button class="print-btn" onclick="window.print()">
+      <button class="print-btn" onclick="printStruk()">
         🖨 Cetak Struk
       </button>
     `;
     overlay.classList.add('open');
   }
 
+  window.printStruk = function () {
+    const content = document.getElementById('receipt-content').innerHTML;
+
+    const win = window.open('', '', 'width=400,height=600');
+
+    win.document.write(`
+      <html>
+        <head>
+          <title>AMERTA</title>
+          <style>
+            body {
+              font-family: monospace;
+              padding: 20px;
+            }
+            .receipt {
+              width: 100%;
+            }
+            img {
+              max-width: 120px;
+              display: block;
+              margin: auto;
+            }
+            hr {
+              border: 1px dashed #000;
+              margin: 10px 0;
+            }
+            button {
+              display: none;
+            }
+          </style>
+        </head>
+        <body>
+          ${content}
+        </body>
+      </html>
+    `);
+
+    win.document.close();
+    win.focus();
+
+    setTimeout(() => {
+      win.print();
+      win.close();
+    }, 500);
+  };
+  
   function init() {
     const overlay = document.getElementById('receipt-modal');
     const closeBtn = document.getElementById('receipt-close');
     if (!overlay) return;
 
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.classList.remove('open');
+      if (e.target === overlay) {
+        overlay.classList.remove('open');
+      }
     });
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+      closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('open');
+      });
     }
   }
   return { show, init };

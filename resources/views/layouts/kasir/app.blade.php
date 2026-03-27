@@ -15,11 +15,32 @@
   <style>
     /* print receipt */
     @media print {
-      body > *:not(#receipt-modal) { display: none !important; }
-      #receipt-modal { position: static !important; background: white !important; }
-      .modal { box-shadow: none; }
-      .print-btn, .modal-close { display: none !important; }
+      body > *:not(#receipt-modal) {
+        display: none !important;
+      }
+
+      #receipt-modal {
+        display: block !important; 
+        position: static !important;
+        background: white !important;
+      }
+
+      #receipt-modal .modal {
+        display: block !important;
+      }
+
+      #receipt-modal.open {
+        display: flex;
+      }
+      #receipt-content {
+        display: block !important;
+      }
+
+      .print-btn, .modal-close {
+        display: none !important;
+      }
     }
+
     .app-outer { display: flex; flex-direction: column; min-height: 100vh; }
     .profil-page{
       padding-top:70px;
@@ -89,6 +110,19 @@
 
 </div><!-- /.app-outer -->
 
+<!-- ============================
+     RECEIPT MODAL
+     ============================ -->
+<div class="modal-overlay" id="receipt-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <span class="modal-title">🧾 Struk Pembayaran</span>
+      <button class="modal-close" id="receipt-close">✕</button>
+    </div>
+    <div id="receipt-content"></div>
+  </div>
+</div>
+
 
 <!-- Toast Container -->
 <div class="toast-container" id="toast-container"></div>
@@ -98,6 +132,11 @@
 <script src="{{ asset('assets/kasir/js/order.js')}}"></script>
 <script src="{{ asset('assets/kasir/js/transactions.js')}}"></script>
 <script src="{{ asset('assets/kasir/js/app.js')}}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    ReceiptModal.init();
+  });
+</script>
 
 </body>
 </html>
