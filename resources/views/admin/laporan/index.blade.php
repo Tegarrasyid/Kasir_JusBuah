@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="page-actions">
+    {{-- <div class="page-actions">
         <div class="period-selector">
             <a href="{{ route('laporan.index',['period'=>'day']) }}" class="period-btn {{ request('period')=='day' ? 'active':'' }}">Hari Ini</a>
             <a href="{{ route('laporan.index',['period'=>'week']) }}" class="period-btn {{ request('period')=='week' ? 'active':'' }}">7 Hari</a>
@@ -20,7 +20,7 @@
         </div>
     </div>
     
-    <br>
+    <br> --}}
 
     <div class="card mb-3" style="padding:15px;">
         <form method="GET" action="{{ route('laporan.index') }}">
@@ -36,6 +36,10 @@
 
                 <a href="{{ route('laporan.index') }}" class="btn btn-secondary">
                     Reset
+                </a>
+
+                <a href="{{ route('laporan.print', request()->all()) }}" class="btn btn-primary" >
+                    Cetak Laporan
                 </a>
             </div>
         </form>

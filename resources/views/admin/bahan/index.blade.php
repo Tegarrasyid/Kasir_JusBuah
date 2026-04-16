@@ -32,7 +32,7 @@
             <th>Nama Bahan</th>
             <th>Satuan</th>
             <th>Stok Saat Ini</th>
-            <th>Stok Min.</th>
+            {{-- <th>Stok Min.</th> --}}
             <th>Harga/Satuan</th>
             <th>Aksi</th>
           </tr>
@@ -49,7 +49,7 @@
               <span class="badge bg-success">{{ $b->stok_tersedia }}</span>
               @endif
             </td>
-            <td>{{ $b->stok_minimum }}</td>
+            {{-- <td>{{ $b->stok_minimum }}</td> --}}
             <td>Rp {{ number_format($b->harga_beli,0,',','.') }}</td>
             <td>
               <a href="{{ route('bahan-baku.edit',$b->id) }}" class="btn btn-warning btn-sm">Edit</a>

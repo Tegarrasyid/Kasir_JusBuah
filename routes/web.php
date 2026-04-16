@@ -63,6 +63,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::resource('resep', ResepProdukController::class);
     Route::resource('pembelian-stok', PembelianStokController::class);
     Route::get('/laporan', [LaporanController::class,'index'])->name('laporan.index');
+    Route::get('/laporan/print', [LaporanController::class, 'print'])->name('laporan.print');
     Route::get('/laporan/{id}', [LaporanController::class,'show'])->name('laporan.show');
     Route::get('/dashboard/data', [AdminController::class, 'dashboardData']);
 
