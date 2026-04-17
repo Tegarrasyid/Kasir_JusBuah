@@ -47,7 +47,6 @@ class LaporanController extends Controller
     {
         $query = Transaksi::with('user');
 
-        // ✅ Jika ada filter tanggal
         if ($request->start_date && $request->end_date) {
             $query->whereBetween('created_at', [
                 $request->start_date . ' 00:00:00',
@@ -55,7 +54,6 @@ class LaporanController extends Controller
             ]);
         }
 
-        // ❗ Jika tidak ada filter → otomatis ambil semua data
 
         $transaksi = $query->get();
 

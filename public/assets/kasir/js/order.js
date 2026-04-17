@@ -201,7 +201,7 @@ const OrderPanel = (() => {
 
     // Ambil input bayar
     const bayarInput = document.getElementById("bayar-input");
-    const bayar = parseInt(bayarInput?.value) || 0;
+    const bayar = parseInt(bayarInput?.value.replace(/\./g, '')) || 0;
 
     // Checkout button
     const btn = document.getElementById('checkout-btn');
@@ -248,7 +248,7 @@ const OrderPanel = (() => {
       produk_id: items.map(i => i.id),
       jumlah: items.map(i => i.qty),
       metode: payMethod,
-      bayar: parseInt(document.getElementById('bayar-input').value),
+      bayar: parseInt(document.getElementById('bayar-input').value.replace(/\./g, '')),
       debit_id: payMethod === 'debit' ? document.getElementById('debit-id').value: null
     };
     try {
@@ -337,7 +337,9 @@ const OrderPanel = (() => {
 
       if (bayarInput) {
         bayarInput.addEventListener("input", () => {
-          const bayar = parseInt(bayarInput.value) || 0;
+          let angka = bayarInput.value.replace(/\D/g, '');
+          bayarInput.value = new Intl.NumberFormat('id-ID').format(angka);
+          const bayar = parseInt(bayarInput.value.replace(/\./g, '')) || 0;
           const tot = total();
           const change = bayar - tot;
 

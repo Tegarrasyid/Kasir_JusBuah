@@ -118,7 +118,11 @@ const ProductCatalog = (() => {
           <div class="product-variant">${p.variant}${!p.stock ? ' · <span style="color:var(--red)">Habis</span>' : ''}</div>
           <div class="product-footer">
             <span class="product-price">${formatRp(p.price)}</span>
-            <button class="add-btn">+</button>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M11 5h2v14h-2zM5 11h14v2H5z"/>
+              </svg>
+            </button>
           </div>
         </div>
       `;
