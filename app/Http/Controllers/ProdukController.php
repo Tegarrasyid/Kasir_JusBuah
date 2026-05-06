@@ -11,10 +11,24 @@ class ProdukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $produk = Produk::with('kategori')->latest()->paginate(10);
+        $search = $request->search;
+
+        $produk = Produk::with('kategori')
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_produk', 'like', "%$search%")
+                    ->orWhere('deskripsi', 'like', "%$search%")
+                    ->orWhereHas('kategori', function ($q) use ($search) {
+                        $q->where('nama_kategori', 'like', "%$search%");
+                    });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString(); // 🔥 penting biar search tetap saat pindah page
+
         $kategori = KategoriProduk::all();
+
         return view('admin.produk.index', compact('produk','kategori'));
     }
 

@@ -36,7 +36,18 @@ class TransaksiController extends Controller
                     break;
                 }
             }
-            $p->stok_produk = $stokCukup;
+            $maxStok = PHP_INT_MAX;
+
+            foreach($reseps as $resep){
+                $bahan = BahanBaku::find($resep->bahan_baku_id);
+
+                if($resep->jumlah_dibutuhkan > 0){
+                    $bisaBuat = floor($bahan->stok_tersedia / $resep->jumlah_dibutuhkan);
+                    $maxStok = min($maxStok, $bisaBuat);
+                }
+            }
+
+            $p->stok_produk = $maxStok;
         }
 
         return view('kasir.dashboard', compact('produk'));
@@ -80,7 +91,11 @@ class TransaksiController extends Controller
                 }
 
                 if(!$stokCukup){
-                    continue;
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Stok bahan baku tidak mencukupi untuk '.$produk->nama_produk
+                    ], 400);
                 }
 
                 $harga = $produk->harga_jual;

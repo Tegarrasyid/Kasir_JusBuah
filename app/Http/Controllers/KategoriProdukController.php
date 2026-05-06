@@ -10,9 +10,15 @@ class KategoriProdukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kategori = KategoriProduk::all();
+        $search = $request->search;
+
+        $kategori = KategoriProduk::when($search, function ($query) use ($search) {
+            $query->where('nama_kategori', 'like', "%$search%")
+                ->orWhere('deskripsi', 'like', "%$search%");
+        })->get();
+
         return view('admin.kategori.index', compact('kategori'));
     }
 

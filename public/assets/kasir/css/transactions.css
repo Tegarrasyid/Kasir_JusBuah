@@ -27,9 +27,11 @@
 
 /* --- Stats Row --- */
 .txn-stats {
-  display: grid; grid-template-columns: repeat(4,1fr);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
   margin-bottom: 28px;
+  justify-content: center;
 }
 @media (max-width: 1100px) { .txn-stats { grid-template-columns: repeat(2,1fr); } }
 .txn-stat-card {

@@ -33,11 +33,11 @@
         <div class="txn-stat-value" id="stat-total-txn">0</div>
         <div class="txn-stat-sub">semua waktu</div>
       </div>
-      <div class="txn-stat-card" style="animation-delay:0.2s">
+      {{-- <div class="txn-stat-card" style="animation-delay:0.2s">
         <div class="txn-stat-label">Rata-rata Nilai</div>
         <div class="txn-stat-value" id="stat-avg-value">Rp 0</div>
         <div class="txn-stat-sub">per transaksi</div>
-      </div>
+      </div> --}}
       <div class="modal-overlay" id="receipt-modal">
         <div class="modal" style="max-width:420px">
           <div class="modal-header">

@@ -10,9 +10,15 @@ class BahanBakuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bahan = BahanBaku::all();
+        $search = $request->search;
+
+        $bahan = BahanBaku::when($search, function ($query) use ($search) {
+            $query->where('nama_bahan', 'like', "%$search%")
+                ->orWhere('satuan', 'like', "%$search%");
+        })->get();
+
         return view('admin.bahan.index', compact('bahan'));
     }
 

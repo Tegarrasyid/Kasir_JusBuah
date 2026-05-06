@@ -20,7 +20,7 @@ const ProductCatalog = (() => {
     variant: p.deskripsi || '',
     foto: p.foto,
     badge: null,
-    stock: Boolean(p.stok_produk)
+    stock: p.stok_produk || 0
   }));
 
   //filter(Boolean) supaya tidak ada kategori kosong dari database
@@ -115,7 +115,10 @@ const ProductCatalog = (() => {
         <div class="product-card ${oos}" data-id="${p.id}"style="animation-delay:${i * 0.04}s">
           <div class="product-emoji-wrap"><img src="/storage/${p.foto}" class="product-img">${badgeHtml}</div>
           <div class="product-name">${p.name}</div>
-          <div class="product-variant">${p.variant}${!p.stock ? ' · <span style="color:var(--red)">Habis</span>' : ''}</div>
+          <div class="product-variant">
+            ${p.variant} <br> 
+            ${p.stock <= 0 ? '<span style="color:var(--red)">Habis</span>': `<span style="color:var(--green)">Sisa ${p.stock}</span>`}
+          </div>
           <div class="product-footer">
             <span class="product-price">${formatRp(p.price)}</span>
             <button class="add-btn">
@@ -142,7 +145,8 @@ const ProductCatalog = (() => {
           name: product.name,
           price: product.price,
           emoji: product.emoji,
-          discount_percent: product.discount_percent
+          discount_percent: product.discount_percent,
+          stock: product.stock
         });
       });
     });

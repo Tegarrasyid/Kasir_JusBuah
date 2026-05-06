@@ -53,8 +53,16 @@ const OrderPanel = (() => {
     const existing = items.find(i => i.id === product.id);
 
     if (existing) {
+      if (existing.qty >= product.stock) {
+        Toast.show('Stok tidak cukup', 'error');
+        return;
+      }
       existing.qty++;
     } else {
+      if (product.stock <= 0) {
+        Toast.show('Stok habis', 'error');
+        return;
+      }
       items.push({
         ...product,
         qty: 1,
@@ -63,15 +71,25 @@ const OrderPanel = (() => {
     }
 
     render();
-    Toast.show(`${product.emoji} ${product.name} ditambahkan`, 'success');
   }
 
   /* ---- Change Qty ---- */
   function changeQty(id, delta) {
     const idx = items.findIndex(i => i.id === id);
     if (idx === -1) return;
+
+    // 🔥 BATAS STOK
+    if (delta > 0 && items[idx].qty >= items[idx].stock) {
+      Toast.show('Stok maksimal tercapai', 'warning');
+      return;
+    }
+
     items[idx].qty += delta;
-    if (items[idx].qty <= 0) items.splice(idx, 1);
+
+    if (items[idx].qty <= 0) {
+      items.splice(idx, 1);
+    }
+
     render();
   }
 

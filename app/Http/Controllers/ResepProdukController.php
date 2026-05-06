@@ -12,10 +12,22 @@ class ResepProdukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $resep = ResepProduk::with(['produk','bahan'])->get()->groupBy('produk_id');
-        return view('admin.resep.index',compact('resep'));  
+        $search = $request->search;
+
+        $resep = ResepProduk::with(['produk','bahan'])
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('produk', function ($q) use ($search) {
+                    $q->where('nama_produk', 'like', "%$search%");
+                })->orWhereHas('bahan', function ($q) use ($search) {
+                    $q->where('nama_bahan', 'like', "%$search%");
+                });
+            })
+            ->get()
+            ->groupBy('produk_id');
+
+        return view('admin.resep.index', compact('resep'));  
     }
 
     /**

@@ -32,8 +32,8 @@
           </div>
         </div>
 
-        <div style="margin-top:16px;font-size:0.8rem;color:var(--text-light);font-weight:600">Total Pendapatan Diproses</div>
-        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--amber-dark);margin-top:4px" id="profile-revenue">Rp 0</div>
+        {{-- <div style="margin-top:16px;font-size:0.8rem;color:var(--text-light);font-weight:600">Total Pendapatan Diproses</div>
+        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--amber-dark);margin-top:4px" id="profile-revenue">Rp 0</div> --}}
       </div>
 
       <!-- Detail Card -->
